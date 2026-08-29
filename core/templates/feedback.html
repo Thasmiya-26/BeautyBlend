@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Beauty Blend Feedback</title>
+
+    {% load static %}
+
+    <link rel="stylesheet"
+          href="{% static 'feedback.css' %}">
+
+</head>
+
+
+<body>
+
+
+<div class="feedback-container">
+
+
+    <!-- ==============================
+         TOP
+    ============================== -->
+
+    <div class="top">
+
+        <span class="back"
+              onclick="goBack()">
+            &#8592;
+        </span>
+
+        <h1>Feedback</h1>
+
+    </div>
+
+
+    <!-- ==============================
+         FEEDBACK MESSAGE
+    ============================== -->
+
+    <h2>How was your experience?</h2>
+
+    <p>Your feedback helps us improve.</p>
+
+
+    <!-- ==============================
+         STAR RATING
+    ============================== -->
+
+    <div class="stars">
+
+        <span onclick="rate(1)">★</span>
+
+        <span onclick="rate(2)">★</span>
+
+        <span onclick="rate(3)">★</span>
+
+        <span onclick="rate(4)">★</span>
+
+        <span onclick="rate(5)">★</span>
+
+    </div>
+
+
+    <h3 id="ratingText">
+        Select your rating
+    </h3>
+
+
+    <!-- ==============================
+         FEEDBACK TEXT
+    ============================== -->
+
+    <label>
+        Write your feedback
+    </label>
+
+
+    <textarea
+        id="feedback"
+        placeholder="Write your experience here..."></textarea>
+
+
+    <!-- ==============================
+         SUBMIT
+    ============================== -->
+
+    <button
+        type="button"
+        onclick="submitFeedback()">
+
+        SUBMIT FEEDBACK
+
+    </button>
+
+
+    <!-- ==============================
+         LOGOUT
+    ============================== -->
+
+    <button
+        type="button"
+        onclick="logoutUser()"
+        style="display: block; margin: 20px auto; padding: 12px 30px; cursor: pointer;">
+
+        LOGOUT
+
+    </button>
+
+
+</div>
+
+
+<script>
+
+let rating = 0;
+
+
+// =====================================================
+// BACK BUTTON
+// =====================================================
+
+function goBack() {
+
+    window.history.back();
+
+}
+
+
+// =====================================================
+// STAR RATING
+// =====================================================
+
+function rate(value) {
+
+    rating = value;
+
+
+    const stars =
+        document.querySelectorAll(".stars span");
+
+
+    stars.forEach(function(star, index) {
+
+        if (index < value) {
+
+            star.classList.add("active");
+
+        }
+        else {
+
+            star.classList.remove("active");
+
+        }
+
+    });
+
+
+    let text = "";
+
+
+    if (value === 1) {
+
+        text = "Bad";
+
+    }
+    else if (value === 2) {
+
+        text = "Average";
+
+    }
+    else if (value === 3) {
+
+        text = "Good";
+
+    }
+    else if (value === 4) {
+
+        text = "Great";
+
+    }
+    else if (value === 5) {
+
+        text = "Very Good Service";
+
+    }
+
+
+    document.getElementById("ratingText").textContent =
+        text;
+
+}
+
+
+// =====================================================
+// SUBMIT FEEDBACK
+// =====================================================
+
+async function submitFeedback() {
+
+
+    // Get feedback text
+
+    const feedback =
+        document.getElementById("feedback").value.trim();
+
+
+    // Check rating
+
+    if (rating === 0) {
+
+        alert("Please select a rating.");
+
+        return;
+
+    }
+
+
+    // Check feedback
+
+    if (feedback === "") {
+
+        alert("Please write your feedback.");
+
+        document.getElementById("feedback").focus();
+
+        return;
+
+    }
+
+
+    // =================================================
+    // GET ACTUAL LOGGED-IN CUSTOMER NAME
+    // =================================================
+
+    let customerName =
+        localStorage.getItem("BeautyBlendUserName");
+
+
+    if (!customerName || customerName.trim() === "") {
+
+        alert("Please login first before submitting feedback.");
+
+        window.location.href =
+            "{% url 'login_page' %}";
+
+        return;
+
+    }
+
+
+    customerName =
+        customerName.trim();
+
+
+    // =================================================
+    // DATA TO SEND TO DJANGO
+    // =================================================
+
+    const data = {
+
+        customer_name: customerName,
+
+        rating: rating,
+
+        message: feedback
+
+    };
+
+
+    // =================================================
+    // SEND TO DJANGO
+    // =================================================
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/api/submit-feedback/",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(data)
+
+                }
+            );
+
+
+        // Check server response
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned an error."
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        // =================================================
+        // SUCCESS
+        // =================================================
+
+        if (result.success) {
+
+
+            alert(
+                "Thank you for your feedback!"
+            );
+
+
+            // Clear textarea
+
+            document.getElementById(
+                "feedback"
+            ).value = "";
+
+
+            // Reset rating text
+
+            document.getElementById(
+                "ratingText"
+            ).textContent =
+                "Select your rating";
+
+
+            // Reset stars
+
+            const stars =
+                document.querySelectorAll(
+                    ".stars span"
+                );
+
+
+            stars.forEach(function(star) {
+
+                star.classList.remove("active");
+
+            });
+
+
+            // Reset rating
+
+            rating = 0;
+
+
+        }
+
+
+        // =================================================
+        // DJANGO ERROR
+        // =================================================
+
+        else {
+
+            alert(
+                result.message ||
+                "Unable to submit feedback."
+            );
+
+        }
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "Feedback error:",
+            error
+        );
+
+
+        alert(
+            "Unable to submit feedback. Please try again."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+function logoutUser() {
+
+    // Remove the actual logged-in user name
+
+    localStorage.removeItem(
+        "BeautyBlendUserName"
+    );
+
+
+    // Remove other possible login data
+
+    localStorage.removeItem(
+        "loggedInUser"
+    );
+
+    localStorage.removeItem(
+        "userName"
+    );
+
+    localStorage.removeItem(
+        "userEmail"
+    );
+
+
+    // Redirect to login page
+
+    window.location.href =
+        "{% url 'login_page' %}";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

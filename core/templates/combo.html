@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Combo Packages | Beauty Blend</title>
+
+    <link rel="stylesheet"
+          href="{% static 'combo.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- BACK BUTTON -->
+
+    <a href="{% url 'home_page' %}"
+       class="back-btn">
+
+        &#8592;
+
+    </a>
+
+
+    <!-- TITLE -->
+
+    <h1>
+        Combo Packages
+    </h1>
+
+
+    <p class="quote">
+
+        "Discover our exclusive combo packages,
+        enjoy more services at special prices,
+        and add your favorite combo to your cart
+        for a complete salon experience."
+
+    </p>
+
+
+    <!-- COMBO CONTAINER -->
+
+    <div class="combo-container">
+
+
+        <!-- ==============================
+             COMBO 1
+        =============================== -->
+
+        <div class="combo-card">
+
+            <h2>
+                🪞 Beauty Essentials
+            </h2>
+
+            <ul>
+
+                <li>
+                    ✔ Facial
+                </li>
+
+                <li>
+                    ✔ Hair Spa
+                </li>
+
+                <li>
+                    ✔ Manicure
+                </li>
+
+            </ul>
+
+
+            <p class="old-price">
+                ₹2999
+            </p>
+
+
+            <p class="new-price">
+                ₹1999
+            </p>
+
+
+            <button
+                onclick="addCombo('Beauty Essentials', 1999)">
+
+                Add Combo
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ==============================
+             COMBO 2
+        =============================== -->
+
+        <div class="combo-card">
+
+            <h2>
+                👰 Bridal Bliss
+            </h2>
+
+            <ul>
+
+                <li>
+                    ✔ Bridal Makeup
+                </li>
+
+                <li>
+                    ✔ Hair Styling
+                </li>
+
+                <li>
+                    ✔ Nail Art
+                </li>
+
+            </ul>
+
+
+            <p class="old-price">
+                ₹17999
+            </p>
+
+
+            <p class="new-price">
+                ₹11999
+            </p>
+
+
+            <button
+                onclick="addCombo('Bridal Bliss', 11999)">
+
+                Add Combo
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ==============================
+             COMBO 3
+        =============================== -->
+
+        <div class="combo-card">
+
+            <h2>
+                🌸 Pamper Package
+            </h2>
+
+            <ul>
+
+                <li>
+                    ✔ Facial
+                </li>
+
+                <li>
+                    ✔ Hair Spa
+                </li>
+
+                <li>
+                    ✔ Pedicure
+                </li>
+
+                <li>
+                    ✔ Waxing
+                </li>
+
+            </ul>
+
+
+            <p class="old-price">
+                ₹3499
+            </p>
+
+
+            <p class="new-price">
+                ₹2199
+            </p>
+
+
+            <button
+                onclick="addCombo('Pamper Package', 2199)">
+
+                Add Combo
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+function addCombo(name, price) {
+
+    // Get existing cart
+
+    let cart =
+        JSON.parse(
+            localStorage.getItem("cart")
+        ) || [];
+
+
+    // Check whether combo already exists
+
+    let exists =
+        cart.find(
+            item => item.name === name
+        );
+
+
+    if (exists) {
+
+        alert(
+            name +
+            " is already in your cart!"
+        );
+
+        return;
+
+    }
+
+
+    // Add combo to cart
+
+    cart.push({
+
+        name: name,
+
+        price: price,
+
+        type: "Combo",
+
+        quantity: 1
+
+    });
+
+
+    // Save cart
+
+    localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+    );
+
+
+    // Save selected combo
+
+    localStorage.setItem(
+        "selectedService",
+        name
+    );
+
+
+    localStorage.setItem(
+        "selectedPrice",
+        price
+    );
+
+
+    alert(
+        name +
+        " added successfully!"
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

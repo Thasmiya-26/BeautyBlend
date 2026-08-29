@@ -1,0 +1,696 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: Arial, sans-serif;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    padding: 30px 20px;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,0.45),
+            rgba(255,255,255,0.45)
+        ),
+        url("images/background.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-attachment: fixed;
+}
+
+
+/* ================= HOME ================= */
+
+.back-home {
+
+    position: absolute;
+
+    top: 30px;
+
+    left: 25px;
+
+    color: #8b2e58;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    font-size: 16px;
+}
+
+.back-home i {
+
+    margin-right: 5px;
+}
+
+
+/* ================= MAIN ================= */
+
+.page-container {
+
+    width: 900px;
+
+    max-width: 95%;
+
+    margin: 50px auto;
+
+    display: grid;
+
+    grid-template-columns: 1.25fr 0.9fr;
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+
+/* ================= LEFT ================= */
+
+.booking-card {
+
+    background: rgba(255,255,255,0.86);
+
+    padding: 28px 30px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.16);
+
+    backdrop-filter: blur(10px);
+}
+
+
+.welcome {
+
+    color: #8b2e58;
+
+    font-weight: bold;
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}
+
+
+#loggedUserName {
+
+    color: #8b2e58;
+}
+
+
+.booking-card h1 {
+
+    color: #8b2e58;
+
+    font-size: 27px;
+
+    margin-bottom: 5px;
+}
+
+
+.subtitle {
+
+    color: #666;
+
+    font-size: 14px;
+
+    margin-bottom: 18px;
+}
+
+
+/* ================= LABEL ================= */
+
+.booking-card label {
+
+    display: block;
+
+    margin-top: 13px;
+
+    margin-bottom: 6px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    color: #222;
+}
+
+
+/* ================= INPUT ================= */
+
+.booking-card input,
+.booking-card select {
+
+    width: 100%;
+
+    height: 40px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 7px;
+
+    padding: 0 12px;
+
+    background: rgba(255,255,255,0.9);
+
+    outline: none;
+
+    font-size: 13px;
+}
+
+
+.booking-card input:focus,
+.booking-card select:focus {
+
+    border-color: #c72d63;
+
+    box-shadow:
+        0 0 5px rgba(199,45,99,0.2);
+}
+
+
+/* NAME */
+
+#fullName {
+
+    background: #f5f5f5;
+
+    cursor: not-allowed;
+}
+
+
+/* ================= PHONE ================= */
+
+.error-message {
+
+    display: block;
+
+    min-height: 15px;
+
+    margin-top: 4px;
+
+    color: #d00000;
+
+    font-size: 12px;
+}
+
+
+/* ================= TIME ================= */
+
+.time-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 0.65fr;
+
+    gap: 8px;
+}
+
+
+.salon-time {
+
+    margin-top: 4px;
+
+    color: #c56a81;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* ================= BUTTON ================= */
+
+.confirm-btn {
+
+    width: 100%;
+
+    height: 40px;
+
+    margin-top: 20px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #c72d63,
+            #9d2751
+        );
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+.confirm-btn:hover {
+
+    opacity: 0.9;
+}
+
+
+/* ================= RIGHT SIDE ================= */
+
+.right-side {
+
+    width: 100%;
+}
+
+
+/* ================= SUMMARY ================= */
+
+.summary-card {
+
+    background: rgba(255,255,255,0.88);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.16);
+}
+
+
+.summary-image {
+
+    width: 100%;
+
+    height: 180px;
+
+    overflow: hidden;
+}
+
+
+.summary-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.summary-card h2 {
+
+    color: #8b2e58;
+
+    text-align: center;
+
+    font-size: 21px;
+
+    padding: 15px 20px 10px;
+}
+
+
+/* ================= ITEMS ================= */
+
+.booking-items {
+
+    padding: 0 20px;
+}
+
+
+.booking-item {
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #ddd;
+}
+
+
+.item-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.item-name {
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    color: #333;
+}
+
+
+.item-price {
+
+    font-size: 13px;
+
+    color: #333;
+}
+
+
+.item-bottom {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 8px;
+}
+
+
+.item-total {
+
+    font-size: 13px;
+
+    color: #555;
+}
+
+
+/* ================= QUANTITY ================= */
+
+.quantity-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.quantity-controls button {
+
+    width: 27px;
+
+    height: 27px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #a72d5b;
+
+    color: white;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+
+.quantity-controls button:hover {
+
+    background: #862348;
+}
+
+
+.quantity {
+
+    min-width: 15px;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    font-size: 13px;
+}
+
+
+/* ================= TOTAL ================= */
+
+.total-section {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin: 18px 20px 20px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #ccc;
+
+    color: #8b2e58;
+
+    font-size: 15px;
+
+    font-weight: bold;
+}
+
+
+.empty-message {
+
+    padding: 15px 0;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   SUCCESS BOX
+   ================================================== */
+
+.success-box {
+
+    margin-top: 18px;
+
+    padding: 25px 22px;
+
+    background: rgba(255,255,255,0.94);
+
+    border: 2px solid #d9789a;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.12);
+}
+
+
+/* SUCCESS TITLE */
+
+.success-title {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    text-align: center;
+
+    color: #a72d5b;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    line-height: 1.35;
+
+    margin-bottom: 25px;
+}
+
+
+/* GREEN CHECK */
+
+.check-icon {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 42px;
+
+    height: 42px;
+
+    background: #45b96b;
+
+    color: white;
+
+    border-radius: 5px;
+
+    font-size: 29px;
+
+    font-weight: bold;
+}
+
+
+/* DETAILS */
+
+.appointment-details {
+
+    padding: 0 8px;
+}
+
+
+.appointment-details p {
+
+    display: flex;
+
+    gap: 5px;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+
+    color: #444;
+
+    line-height: 1.4;
+}
+
+
+.appointment-details strong {
+
+    color: #222;
+
+    min-width: 130px;
+}
+
+
+/* SERVICES */
+
+.success-services {
+
+    margin-top: 20px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #ddd;
+}
+
+
+.success-services h3 {
+
+    color: #a72d5b;
+
+    font-size: 17px;
+
+    margin-bottom: 10px;
+}
+
+
+.success-service-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 7px 0;
+
+    font-size: 13px;
+
+    color: #444;
+}
+
+
+/* SUCCESS TOTAL */
+
+.success-total {
+
+    margin-top: 15px;
+
+    padding-top: 13px;
+
+    border-top: 1px solid #ddd;
+
+    color: #a72d5b;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 800px) {
+
+    body {
+
+        padding: 70px 12px 20px;
+    }
+
+
+    .back-home {
+
+        top: 20px;
+
+        left: 15px;
+    }
+
+
+    .page-container {
+
+        grid-template-columns: 1fr;
+
+        width: 500px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .booking-card {
+
+        padding: 20px;
+    }
+
+
+    .booking-card h1 {
+
+        font-size: 23px;
+    }
+
+
+    .time-row {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .success-title {
+
+        font-size: 19px;
+    }
+
+
+    .appointment-details p {
+
+        flex-direction: column;
+    }
+
+
+    .appointment-details strong {
+
+        min-width: auto;
+    }
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Beauty Blend</title>
+
+    <link rel="stylesheet"
+          href="{% static 'home.css' %}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ==============================
+         NAVIGATION BAR
+    =============================== -->
+
+    <nav class="navbar">
+
+
+        <!-- LOGO + BRAND -->
+
+        <div class="brand">
+
+            <img src="{% static 'images/logo.jpg' %}"
+                 alt="Beauty Blend Logo"
+                 class="nav-logo">
+
+            <span>
+                Beauty Blend
+            </span>
+
+        </div>
+
+
+        <!-- NAVIGATION LINKS -->
+
+        <ul class="nav-links">
+
+
+            <!-- HOME -->
+
+            <li>
+
+                <a href="{% url 'home_page' %}">
+                    Home
+                </a>
+
+            </li>
+
+
+            <!-- ABOUT US -->
+
+            <li>
+
+                <a href="{% url 'about_page' %}">
+                    About Us
+                </a>
+
+            </li>
+
+
+            <!-- SERVICES -->
+
+            <li>
+
+                <a href="{% url 'services_page' %}">
+                    Services
+                </a>
+
+            </li>
+
+
+            <!-- COMBOS -->
+
+            <li>
+
+                <a href="{% url 'combos_page' %}">
+                    Combos
+                </a>
+
+            </li>
+
+
+            <!-- BOOK APPOINTMENT -->
+
+            <li>
+
+                <a href="#"
+                   onclick="checkLogin(); return false;">
+
+                    Book Appointment
+
+                </a>
+
+            </li>
+
+
+            <!-- CONTACT US -->
+
+            <li>
+
+                <a href="{% url 'contact_page' %}">
+                    Contact Us
+                </a>
+
+            </li>
+
+
+            <!-- FEEDBACK -->
+
+            <li>
+
+                <a href="{% url 'feedback_page' %}">
+                    Feedback
+                </a>
+
+            </li>
+
+
+            <!-- ADMIN -->
+
+            <li>
+
+                <a href="{% url 'admin_page' %}">
+                    Admin
+                </a>
+
+            </li>
+
+
+        </ul>
+
+    </nav>
+
+
+
+    <!-- ==============================
+         HOME SECTION
+    =============================== -->
+
+    <section class="home">
+
+
+        <img src="{% static 'images/logo.jpg' %}"
+             alt="Beauty Blend Logo"
+             class="logo">
+
+
+        <h1>
+            BEAUTY BLEND
+        </h1>
+
+
+        <p class="tagline">
+
+            We Don't Change You,<br>
+            We Celebrate You.
+
+        </p>
+
+
+        <a href="{% url 'signup_page' %}"
+           class="btn">
+
+            Sign Up Now
+
+        </a>
+
+
+    </section>
+
+
+
+    <!-- ==============================
+         HOME JAVASCRIPT
+    =============================== -->
+
+    <script>
+
+
+        // ======================================
+        // CHECK LOGIN BEFORE BOOKING
+        // ======================================
+
+        function checkLogin() {
+
+
+            let loggedIn =
+                localStorage.getItem(
+                    "BeautyBlendLoggedIn"
+                );
+
+
+            if (loggedIn === "true") {
+
+
+                // OPEN BOOKING PAGE
+
+                window.location.href =
+                    "{% url 'booking_page' %}";
+
+
+            }
+
+            else {
+
+
+                alert(
+                    "Please Login First!"
+                );
+
+
+                window.location.href =
+                    "{% url 'login_page' %}";
+
+            }
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
