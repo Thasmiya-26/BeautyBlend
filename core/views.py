@@ -41,7 +41,7 @@ def services_page(request):
 
 
 def booking_page(request):
-    return render(request, "booking.html")
+    return render(request, "Booking.html")
 
 
 def admin_page(request):
