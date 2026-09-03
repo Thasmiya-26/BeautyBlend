@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Our Services</title>
+
+    <link rel="stylesheet"
+          href="{% static 'services.css' %}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TOP BAR -->
+
+    <div class="top-bar">
+
+        <a href="{% url 'home_page' %}"
+           class="back-arrow">
+            &#8592;
+        </a>
+
+        <h1>Our Services</h1>
+
+    </div>
+
+
+    <!-- QUOTE -->
+
+    <p class="service-quote">
+
+        "Explore our premium salon services, check the prices,
+        and add your favorite treatments to your cart for a
+        seamless booking experience."
+
+    </p>
+
+
+    <!-- HAIR CARE -->
+
+    <div class="service">
+
+        <div class="header" onclick="toggle(this)">
+
+            <h2>👧 Hair Care</h2>
+
+            <span>▼</span>
+
+        </div>
+
+        <div class="content">
+
+            <div class="row">
+                <span>Hair Cut</span>
+
+                <div class="price-box">
+                    <span class="price">₹300</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Hair Cut', 300)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Hair Wash</span>
+
+                <div class="price-box">
+                    <span class="price">₹200</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Hair Wash', 200)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Hair Spa</span>
+
+                <div class="price-box">
+                    <span class="price">₹1200</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Hair Spa', 1200)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Smoothening</span>
+
+                <div class="price-box">
+                    <span class="price">₹3500</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Smoothening', 3500)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Keratin Treatment</span>
+
+                <div class="price-box">
+                    <span class="price">₹4500</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Keratin Treatment', 4500)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- SKIN CARE -->
+
+    <div class="service">
+
+        <div class="header" onclick="toggle(this)">
+
+            <h2>🧴 Skin Care</h2>
+
+            <span>▼</span>
+
+        </div>
+
+        <div class="content">
+
+            <div class="row">
+                <span>Cleanup</span>
+
+                <div class="price-box">
+                    <span class="price">₹500</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Cleanup', 500)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Basic Facial</span>
+
+                <div class="price-box">
+                    <span class="price">₹700</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Basic Facial', 700)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Fruit Facial</span>
+
+                <div class="price-box">
+                    <span class="price">₹1000</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Fruit Facial', 1000)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Gold Facial</span>
+
+                <div class="price-box">
+                    <span class="price">₹1500</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Gold Facial', 1500)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- MAKEUP -->
+
+    <div class="service">
+
+        <div class="header" onclick="toggle(this)">
+
+            <h2>💄 Makeup</h2>
+
+            <span>▼</span>
+
+        </div>
+
+        <div class="content">
+
+            <div class="row">
+                <span>Party Makeup</span>
+
+                <div class="price-box">
+                    <span class="price">₹2500</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Party Makeup', 2500)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Engagement Makeup</span>
+
+                <div class="price-box">
+                    <span class="price">₹7000</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Engagement Makeup', 7000)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Bridal Makeup</span>
+
+                <div class="price-box">
+                    <span class="price">₹12000</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Bridal Makeup', 12000)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- NAIL CARE -->
+
+    <div class="service">
+
+        <div class="header" onclick="toggle(this)">
+
+            <h2>💅 Nail Care</h2>
+
+            <span>▼</span>
+
+        </div>
+
+        <div class="content">
+
+            <div class="row">
+                <span>Manicure</span>
+
+                <div class="price-box">
+                    <span class="price">₹500</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Manicure', 500)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Pedicure</span>
+
+                <div class="price-box">
+                    <span class="price">₹700</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Pedicure', 700)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Nail Art</span>
+
+                <div class="price-box">
+                    <span class="price">₹1200</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Nail Art', 1200)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- WAXING & THREADING -->
+
+    <div class="service">
+
+        <div class="header" onclick="toggle(this)">
+
+            <h2>🪒 Waxing & Threading</h2>
+
+            <span>▼</span>
+
+        </div>
+
+        <div class="content">
+
+            <div class="row">
+                <span>Eyebrow</span>
+
+                <div class="price-box">
+                    <span class="price">₹50</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Eyebrow', 50)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Upper Lip</span>
+
+                <div class="price-box">
+                    <span class="price">₹40</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Upper Lip', 40)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Full Arms Wax</span>
+
+                <div class="price-box">
+                    <span class="price">₹400</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Full Arms Wax', 400)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <span>Full Legs Wax</span>
+
+                <div class="price-box">
+                    <span class="price">₹600</span>
+
+                    <button class="cart-btn"
+                            onclick="addToCart('Full Legs Wax', 600)">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+    // ======================================
+    // OPEN / CLOSE SERVICE CATEGORY
+    // ======================================
+
+    function toggle(element) {
+
+        const content =
+            element.nextElementSibling;
+
+        const arrow =
+            element.querySelector("span");
+
+        if (content.style.display === "block") {
+
+            content.style.display = "none";
+            arrow.innerHTML = "▼";
+
+        } else {
+
+            content.style.display = "block";
+            arrow.innerHTML = "▲";
+
+        }
+
+    }
+
+
+    // ======================================
+    // ADD SERVICE
+    // ======================================
+
+    async function addToCart(service, price) {
+
+        // ----------------------------------
+        // CHECK LOCAL CART
+        // ----------------------------------
+
+        let cart =
+            JSON.parse(
+                localStorage.getItem("cart")
+            ) || [];
+
+
+        let exists =
+            cart.find(
+                item => item.name === service
+            );
+
+
+        if (exists) {
+
+            alert(
+                service +
+                " is already in your cart!"
+            );
+
+            return;
+
+        }
+
+
+        // ----------------------------------
+        // ADD TO LOCAL CART
+        // ----------------------------------
+
+        cart.push({
+
+            name: service,
+
+            price: price,
+
+            quantity: 1,
+
+            type: "Service"
+
+        });
+
+
+        localStorage.setItem(
+            "cart",
+            JSON.stringify(cart)
+        );
+
+
+        localStorage.setItem(
+            "selectedService",
+            service
+        );
+
+
+        localStorage.setItem(
+            "selectedPrice",
+            price
+        );
+
+
+        // ----------------------------------
+        // SAVE SERVICE TO DJANGO DATABASE
+        // ----------------------------------
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/add-service/",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            name: service,
+
+                            price: price,
+
+                            description: "Salon service"
+
+                        })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (data.success) {
+
+                alert(
+                    service +
+                    " added successfully!"
+                );
+
+            } else {
+
+                alert(
+                    data.message
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Service error:",
+                error
+            );
+
+            alert(
+                "Service was added to the cart, but could not be saved to the database."
+            );
+
+        }
+
+    }
+
+</script>
+
+</body>
+
+</html>

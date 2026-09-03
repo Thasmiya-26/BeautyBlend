@@ -1,0 +1,850 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    font-family:'Poppins', Arial, sans-serif;
+}
+
+
+body{
+
+    background:url("images/background.jpg")
+    no-repeat center center fixed;
+
+    background-size:cover;
+
+    min-height:100vh;
+
+    padding:25px 0;
+}
+
+
+/* ================= CONTAINER ================= */
+
+.admin-container{
+
+    width:95%;
+
+    max-width:1400px;
+
+    margin:auto;
+}
+
+
+/* ================= HEADER ================= */
+
+.top-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:rgba(255,255,255,0.92);
+
+    padding:20px 30px;
+
+    border-radius:18px;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.10);
+
+    margin-bottom:25px;
+}
+
+
+.dashboard-heading{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+
+.back-btn{
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    background:#f8d7e3;
+
+    color:#b54b73;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-decoration:none;
+
+    font-size:18px;
+
+    transition:0.3s;
+}
+
+
+.back-btn:hover{
+
+    background:#b54b73;
+
+    color:white;
+}
+
+
+.page-title h1{
+
+    color:#b54b73;
+
+    font-size:32px;
+}
+
+
+.page-title p{
+
+    color:#666;
+
+    margin-top:8px;
+
+    font-size:14px;
+}
+
+
+/* ================= PROFILE ================= */
+
+.admin-profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+
+.admin-avatar{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:#f7b7cc;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+    font-weight:bold;
+}
+
+
+.profile-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+}
+
+
+.profile-info strong{
+
+    color:#444;
+
+    font-size:16px;
+}
+
+
+.profile-info small{
+
+    color:#777;
+
+    font-size:13px;
+}
+
+
+/* ================= WELCOME CARD ================= */
+
+.welcome-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:rgba(255,255,255,0.92);
+
+    padding:30px;
+
+    border-radius:18px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.10);
+}
+
+
+.welcome-text h2{
+
+    color:#b54b73;
+
+    font-size:30px;
+
+    margin-bottom:10px;
+}
+
+
+.welcome-text p{
+
+    color:#555;
+
+    font-size:16px;
+
+    line-height:1.8;
+
+    max-width:700px;
+}
+
+
+.welcome-image{
+
+    font-size:80px;
+}
+
+
+/* ================= STATISTICS ================= */
+
+.statistics{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:20px;
+
+    margin-bottom:30px;
+}
+
+
+/* ================= STAT CARD ================= */
+
+.stat-card{
+
+    background:rgba(255,255,255,0.95);
+
+    border-radius:18px;
+
+    padding:22px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.08);
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    border:2px solid transparent;
+}
+
+
+.stat-card:hover{
+
+    transform:translateY(-6px);
+
+    border-color:#f3b4c8;
+
+    box-shadow:
+        0 12px 28px rgba(181,75,115,0.18);
+}
+
+
+.stat-card:active{
+
+    transform:scale(0.98);
+}
+
+
+/* ================= ICON ================= */
+
+.stat-icon{
+
+    width:65px;
+
+    height:65px;
+
+    min-width:65px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:25px;
+
+    color:white;
+}
+
+
+.users-icon{
+
+    background:#ec6f91;
+}
+
+
+.appointment-icon{
+
+    background:#ff9f43;
+}
+
+
+.revenue-icon{
+
+    background:#20bf6b;
+}
+
+
+.feedback-icon{
+
+    background:#6c5ce7;
+}
+
+
+.services-icon{
+
+    background:#d85b87;
+}
+
+
+.combo-icon{
+
+    background:#9b59b6;
+}
+
+
+/* ================= CONTENT ================= */
+
+.stat-content p{
+
+    color:#444;
+
+    font-weight:600;
+
+    font-size:14px;
+}
+
+
+.stat-content h2{
+
+    color:#b54b73;
+
+    font-size:28px;
+
+    margin:5px 0;
+}
+
+
+.stat-content small{
+
+    color:#777;
+
+    font-size:11px;
+}
+
+
+/* =================================================
+   MODAL
+================================================= */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    z-index:1000;
+
+    left:0;
+
+    top:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(0,0,0,0.55);
+
+    backdrop-filter:blur(5px);
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+}
+
+
+/* ================= MODAL BOX ================= */
+
+.modal-box{
+
+    width:100%;
+
+    max-width:850px;
+
+    max-height:85vh;
+
+    background:white;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,0.25);
+
+    animation:modalOpen 0.25s ease;
+}
+
+
+@keyframes modalOpen{
+
+    from{
+
+        transform:scale(0.9);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+
+/* ================= MODAL HEADER ================= */
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px 25px;
+
+    background:#fff7fa;
+
+    border-bottom:1px solid #f0dce4;
+}
+
+
+.modal-header h2{
+
+    color:#b54b73;
+
+    font-size:24px;
+}
+
+
+.modal-header p{
+
+    color:#777;
+
+    font-size:13px;
+
+    margin-top:5px;
+}
+
+
+.close-btn{
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#f8d7e3;
+
+    color:#b54b73;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+
+.close-btn:hover{
+
+    background:#b54b73;
+
+    color:white;
+}
+
+
+/* ================= MODAL CONTENT ================= */
+
+.modal-content{
+
+    padding:25px;
+
+    max-height:65vh;
+
+    overflow-y:auto;
+}
+
+
+/* ================= DATA CARD ================= */
+
+.data-card{
+
+    background:#fff7fa;
+
+    border-left:5px solid #b54b73;
+
+    border-radius:12px;
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+}
+
+
+.data-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+}
+
+
+.data-avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    background:#f7b7cc;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+    font-size:18px;
+
+    flex-shrink:0;
+}
+
+
+.data-info h3{
+
+    color:#b54b73;
+
+    font-size:16px;
+
+    margin-bottom:5px;
+}
+
+
+.data-info p{
+
+    color:#666;
+
+    font-size:13px;
+
+    margin:4px 0;
+}
+
+
+.data-info i{
+
+    color:#b54b73;
+
+    width:18px;
+}
+
+
+.data-right{
+
+    text-align:right;
+}
+
+
+.data-right strong{
+
+    color:#20bf6b;
+
+    font-size:17px;
+}
+
+
+.data-right small{
+
+    display:block;
+
+    color:#777;
+
+    margin-top:5px;
+}
+
+
+/* ================= RATING ================= */
+
+.rating{
+
+    color:#f5b400;
+
+    font-size:17px;
+
+    margin-bottom:5px;
+}
+
+
+/* ================= EMPTY ================= */
+
+.empty-message{
+
+    text-align:center;
+
+    padding:40px 20px;
+
+    color:#777;
+}
+
+
+.empty-message i{
+
+    font-size:45px;
+
+    color:#d889a5;
+
+    margin-bottom:12px;
+}
+
+
+.empty-message h3{
+
+    color:#b54b73;
+
+    margin-bottom:8px;
+}
+
+
+.empty-message p{
+
+    font-size:14px;
+}
+
+
+/* ================= SERVICE CARD ================= */
+
+.service-card{
+
+    background:#fff7fa;
+
+    border:1px solid #f3d5df;
+
+    border-radius:14px;
+
+    padding:18px;
+
+    margin-bottom:12px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+
+.service-card h3{
+
+    color:#b54b73;
+
+    font-size:17px;
+
+    margin-bottom:5px;
+}
+
+
+.service-card p{
+
+    color:#777;
+
+    font-size:13px;
+}
+
+
+.service-price{
+
+    color:#20bf6b;
+
+    font-size:17px;
+
+    font-weight:bold;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1000px){
+
+    .statistics{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:768px){
+
+    .top-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+    }
+
+
+    .welcome-card{
+
+        flex-direction:column;
+
+        text-align:center;
+
+        gap:20px;
+    }
+
+
+    .welcome-image{
+
+        font-size:60px;
+    }
+
+
+    .statistics{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .data-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+
+    .data-right{
+
+        text-align:left;
+    }
+
+}
+
+
+@media(max-width:480px){
+
+    .admin-container{
+
+        width:92%;
+    }
+
+
+    .page-title h1{
+
+        font-size:26px;
+    }
+
+
+    .welcome-card{
+
+        padding:22px;
+    }
+
+
+    .welcome-text h2{
+
+        font-size:24px;
+    }
+
+
+    .modal{
+
+        padding:10px;
+    }
+
+
+    .modal-content{
+
+        padding:18px;
+    }
+
+}

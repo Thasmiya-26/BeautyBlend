@@ -1,0 +1,144 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background-image:url("/static/images/background.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    min-height:100vh;
+}
+
+/* NAVBAR */
+
+.navbar{
+    width:100%;
+    background:#8B2E58;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:white;
+    font-size:34px;
+    font-weight:bold;
+}
+
+.nav-logo{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid white;
+}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.nav-links li{
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#FFD1E3;
+}
+
+/* HOME */
+
+.home{
+    text-align:center;
+    margin-top:60px;
+}
+
+.logo{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+}
+
+.home h1{
+    color:#8B2E58;
+    font-size:60px;
+    margin-top:20px;
+}
+
+.tagline{
+    color:#8B2E58;
+    font-size:28px;
+    margin-top:20px;
+    line-height:45px;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:35px;
+    padding:15px 40px;
+    background:#191818;
+    color:rgb(235, 232, 232);          /* Text color changed to black */
+    text-decoration:none;
+    border-radius:10px;
+    font-size:22px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#111111;
+    color:black;
+}
+@media(max-width:900px){
+
+.navbar{
+    flex-direction:column;
+    gap:20px;
+}
+
+.nav-links{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.brand{
+    font-size:28px;
+}
+
+.nav-logo{
+    width:45px;
+    height:45px;
+}
+
+.home h1{
+    font-size:45px;
+}
+
+.tagline{
+    font-size:22px;
+}
+
+.logo{
+    width:180px;
+    height:180px;
+}
+
+}

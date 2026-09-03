@@ -1,0 +1,139 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background-image:url("images/background.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    min-height:100vh;
+}
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:40px auto;
+}
+
+.back-btn{
+    text-decoration:none;
+    color:#8B2E58;
+    font-size:35px;
+    font-weight:bold;
+    display:inline-block;
+    margin-bottom:15px;
+    transition:0.3s;
+}
+
+.back-btn:hover{
+    color:#b84b78;
+}
+
+h1{
+    text-align:center;
+    color:#8B2E58;
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.quote{
+    text-align:center;
+    color:#8B2E58;
+    font-size:18px;
+    font-style:italic;
+    margin-bottom:35px;
+    line-height:1.6;
+}
+
+.combo-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.combo-card{
+    background:rgba(255,255,255,0.95);
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+
+.combo-card:hover{
+    transform:translateY(-8px);
+}
+
+.combo-card h2{
+    color:#8B2E58;
+    margin-bottom:15px;
+    font-size:28px;
+}
+
+.combo-card ul{
+    list-style:none;
+    margin:15px 0;
+}
+
+.combo-card ul li{
+    padding:8px 0;
+    font-size:17px;
+    color:#444;
+}
+
+.old-price{
+    color:#888;
+    text-decoration:line-through;
+    font-size:18px;
+    margin-top:10px;
+}
+
+.new-price{
+    color:#8B2E58;
+    font-size:30px;
+    font-weight:bold;
+    margin:10px 0 20px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:#8B2E58;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:17px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#a83c68;
+}
+
+@media(max-width:768px){
+
+    .container{
+        width:95%;
+    }
+
+    h1{
+        font-size:34px;
+    }
+
+    .quote{
+        font-size:16px;
+    }
+
+    .combo-card h2{
+        font-size:24px;
+    }
+
+    .new-price{
+        font-size:26px;
+    }
+}

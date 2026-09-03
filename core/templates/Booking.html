@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Beauty Blend - Book Appointment</title>
+
+    <!-- BOOKING CSS -->
+    <link rel="stylesheet" href="{% static 'Book.css' %}">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- ================= HOME ================= -->
+
+    <a href="{% url 'home_page' %}" class="back-home">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Home
+
+    </a>
+
+
+    <div class="page-container">
+
+
+        <!-- ================= LEFT SIDE ================= -->
+
+        <div class="booking-card">
+
+
+            <!-- LOGGED USER -->
+
+            <div class="welcome">
+
+                Hi,
+
+                <span id="loggedUserName"></span>!
+
+            </div>
+
+
+            <h1>
+
+                Book Your Appointment
+
+            </h1>
+
+
+            <p class="subtitle">
+
+                Relax, Refresh & Reveal Your Beauty
+
+            </p>
+
+
+
+            <!-- ================= BOOKING FORM ================= -->
+
+            <form id="bookingForm">
+
+
+                <!-- NAME -->
+
+                <label for="fullName">
+
+                    Full Name
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="fullName"
+                    readonly
+                >
+
+
+
+                <!-- PHONE -->
+
+                <label for="phone">
+
+                    Phone Number
+
+                </label>
+
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter 10 digit phone number"
+                    maxlength="10"
+                    inputmode="numeric"
+                    required
+                >
+
+
+                <small
+                    id="phoneError"
+                    class="error-message">
+                </small>
+
+
+
+                <!-- DATE -->
+
+                <label for="appointmentDate">
+
+                    Appointment Date
+
+                </label>
+
+
+                <input
+                    type="date"
+                    id="appointmentDate"
+                    required
+                >
+
+
+
+                <!-- TIME -->
+
+                <label for="appointmentTime">
+
+                    Appointment Time
+
+                </label>
+
+
+                <div class="time-row">
+
+
+                    <input
+                        type="time"
+                        id="appointmentTime"
+                        required
+                    >
+
+
+                    <select id="ampm" required>
+
+                        <option value="">
+
+                            AM / PM
+
+                        </option>
+
+
+                        <option value="AM">
+
+                            AM
+
+                        </option>
+
+
+                        <option value="PM">
+
+                            PM
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <p class="salon-time">
+
+                    Salon Timings: 10:00 AM - 8:00 PM
+
+                </p>
+
+
+
+                <!-- PAYMENT -->
+
+                <label for="payment">
+
+                    Payment Method
+
+                </label>
+
+
+                <select id="payment" required>
+
+
+                    <option value="">
+
+                        Choose Payment
+
+                    </option>
+
+
+                    <option value="Cash at Salon">
+
+                        Cash at Salon
+
+                    </option>
+
+
+                    <option value="GPay at Salon">
+
+                        GPay at Salon
+
+                    </option>
+
+
+                    <option value="PhonePe at Salon">
+
+                        PhonePe at Salon
+
+                    </option>
+
+
+                </select>
+
+
+
+                <!-- CONFIRM BOOKING -->
+
+                <button
+                    type="submit"
+                    class="confirm-btn">
+
+                    Confirm Booking
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= RIGHT SIDE ================= -->
+
+        <div class="right-side">
+
+
+
+            <!-- ================= BOOKING SUMMARY ================= -->
+
+            <div class="summary-card">
+
+
+                <div class="summary-image">
+
+                    <img
+                        src="{% static 'images/book.jpg' %}"
+                        alt="Beauty Blend"
+                    >
+
+                </div>
+
+
+                <h2>
+
+                    Booking Summary
+
+                </h2>
+
+
+
+                <!-- SELECTED SERVICES -->
+
+                <div
+                    id="bookingItems"
+                    class="booking-items">
+
+                </div>
+
+
+
+                <!-- TOTAL -->
+
+                <div class="total-section">
+
+
+                    <span>
+
+                        Total Amount :
+
+                    </span>
+
+
+                    <span id="totalAmount">
+
+                        ₹0
+
+                    </span>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= SUCCESS BOX ================= -->
+
+            <div
+                id="successBox"
+                class="success-box"
+                style="display:none;"
+            >
+
+
+                <!-- SUCCESS TITLE -->
+
+                <div class="success-title">
+
+
+                    <span class="check-icon">
+
+                        ✓
+
+                    </span>
+
+
+                    <span>
+
+                        Appointment<br>
+
+                        Booked Successfully!
+
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- CUSTOMER DETAILS -->
+
+                <div class="appointment-details">
+
+
+                    <p>
+
+                        <strong>
+                            Name:
+                        </strong>
+
+                        <span id="successName"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Phone:
+                        </strong>
+
+                        <span id="successPhone"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Appointment Date:
+                        </strong>
+
+                        <span id="successDate"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Appointment Time:
+                        </strong>
+
+                        <span id="successTime"></span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Payment Method:
+                        </strong>
+
+                        <span id="successPayment"></span>
+
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- SELECTED SERVICES -->
+
+                <div class="success-services">
+
+
+                    <h3>
+
+                        Selected Services
+
+                    </h3>
+
+
+                    <div id="successServices">
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- SUCCESS TOTAL -->
+
+                <div class="success-total">
+
+
+                    <span>
+
+                        Total Amount :
+
+                    </span>
+
+
+                    <span id="successTotal">
+
+                        ₹0
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- BOOKING JAVASCRIPT -->
+
+    <script src="{% static 'Book.js' %}"></script>
+
+
+</body>
+
+</html>

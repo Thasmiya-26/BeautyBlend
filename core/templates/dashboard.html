@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Beauty Blend - Admin Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{% static 'dashboard.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="admin-container">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="top-header">
+
+        <div class="page-title">
+
+            <div class="dashboard-heading">
+
+                <a href="{% url 'admin_page' %}"
+                   class="back-btn">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                </a>
+
+                <h1>Dashboard</h1>
+
+            </div>
+
+            <p>
+                Welcome back, Sujatha! 👋
+            </p>
+
+        </div>
+
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+                S
+            </div>
+
+            <div class="profile-info">
+
+                <strong>Sujatha</strong>
+
+                <small>Salon Manager</small>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= WELCOME CARD ================= -->
+
+    <section class="welcome-card">
+
+        <div class="welcome-text">
+
+            <h2>
+                Welcome, Sujatha! 💖
+            </h2>
+
+            <p>
+                Beauty begins with care, grows with creativity,
+                and shines through exceptional service.
+                Every client deserves to feel confident,
+                beautiful, and valued.
+            </p>
+
+        </div>
+
+
+        <div class="welcome-image">
+            💇‍♀️
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= DASHBOARD BOXES ================= -->
+
+    <section class="statistics">
+
+
+        <!-- TOTAL USERS -->
+
+        <div class="stat-card"
+             onclick="showData('users')">
+
+            <div class="stat-icon users-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <p>Total Users</p>
+
+                <h2 id="totalUsers">0</h2>
+
+                <small>
+                    Click to view users
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- APPOINTMENTS -->
+
+        <div class="stat-card"
+             onclick="showData('appointments')">
+
+            <div class="stat-icon appointment-icon">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <p>Appointments</p>
+
+                <h2 id="totalAppointments">0</h2>
+
+                <small>
+                    Click to view appointments
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- REVENUE -->
+
+        <div class="stat-card"
+             onclick="showData('revenue')">
+
+            <div class="stat-icon revenue-icon">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <p>Total Revenue</p>
+
+                <h2 id="totalRevenue">₹0</h2>
+
+                <small>
+                    Click to view revenue
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FEEDBACK -->
+
+        <div class="stat-card"
+             onclick="showData('feedback')">
+
+            <div class="stat-icon feedback-icon">
+
+                <i class="fa-solid fa-star"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <p>Feedback</p>
+
+                <h2 id="totalFeedback">0</h2>
+
+                <small>
+                    Click to view feedback
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SERVICES -->
+
+        <div class="stat-card"
+             onclick="showData('services')">
+
+            <div class="stat-icon services-icon">
+
+                <i class="fa-solid fa-scissors"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <p>Services</p>
+
+                <h2 id="totalServices">0</h2>
+
+                <small>
+                    Click to view services
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- COMBO SERVICES -->
+
+        <div class="stat-card"
+             onclick="showData('combos')">
+
+            <div class="stat-icon combo-icon">
+
+                <i class="fa-solid fa-gift"></i>
+
+            </div>
+
+            <div class="stat-content">
+
+                <p>Combo Services</p>
+
+                <h2 id="totalCombos">0</h2>
+
+                <small>
+                    Click to view combos
+                </small>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+</div>
+
+
+
+<!-- =================================================
+     DATA POPUP
+================================================= -->
+
+<div id="dataModal"
+     class="modal">
+
+
+    <div class="modal-box">
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Details
+                </h2>
+
+                <p id="modalDescription">
+                    Information
+                </p>
+
+            </div>
+
+
+            <button class="close-btn"
+                    onclick="closeModal()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- MODAL CONTENT -->
+
+        <div id="modalContent"
+             class="modal-content">
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script src="{% static 'dashboard.js' %}"></script>
+
+
+</body>
+
+</html>
