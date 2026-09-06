@@ -64,7 +64,7 @@ urlpatterns = [
 
     path(
         "combos/",
-        views.combos_page,
+        views.combo_page,
         name="combos_page"
     ),
 
