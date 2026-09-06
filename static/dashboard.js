@@ -1,13 +1,12 @@
 // =====================================================
 // BEAUTY BLEND - ADMIN DASHBOARD
-// Connected to Django + SQLite
 // =====================================================
 
 
 // =====================================================
-// FIXED BEAUTYBLEND SERVICE CATALOGUE
-// These are the services shown on the Services page.
-// They are NOT taken from customer appointments.
+// BEAUTY BLEND SERVICE CATALOGUE
+// These are the services available on services.html.
+// Customer appointment selections are NOT used here.
 // =====================================================
 
 const AVAILABLE_SERVICES = [
@@ -130,6 +129,35 @@ const AVAILABLE_SERVICES = [
 
 
 // =====================================================
+// BEAUTY BLEND COMBO CATALOGUE
+// These are the three combos shown on combo.html.
+// Customer selections are NOT used here.
+// =====================================================
+
+const AVAILABLE_COMBOS = [
+
+    {
+        name: "Beauty Essentials",
+        price: 1999,
+        description: "Facial • Hair Spa • Manicure"
+    },
+
+    {
+        name: "Bridal Bliss",
+        price: 11999,
+        description: "Bridal Makeup • Hair Styling • Nail Art"
+    },
+
+    {
+        name: "Pamper Package",
+        price: 2199,
+        description: "Facial • Hair Spa • Pedicure • Waxing"
+    }
+
+];
+
+
+// =====================================================
 // PAGE LOAD
 // =====================================================
 
@@ -186,7 +214,7 @@ async function loadDashboard() {
 
         // =================================================
         // TOTAL SERVICES
-        // Always show the actual BeautyBlend catalogue count.
+        // Always use the official service catalogue.
         // =================================================
 
         const totalServices =
@@ -205,7 +233,9 @@ async function loadDashboard() {
         // =================================================
 
         const totalAppointments =
-            document.getElementById("totalAppointments");
+            document.getElementById(
+                "totalAppointments"
+            );
 
         if (totalAppointments) {
 
@@ -220,7 +250,9 @@ async function loadDashboard() {
         // =================================================
 
         const totalFeedback =
-            document.getElementById("totalFeedback");
+            document.getElementById(
+                "totalFeedback"
+            );
 
         if (totalFeedback) {
 
@@ -232,15 +264,18 @@ async function loadDashboard() {
 
         // =================================================
         // TOTAL COMBOS
+        // Always use the official three combos.
         // =================================================
 
         const totalCombos =
-            document.getElementById("totalCombos");
+            document.getElementById(
+                "totalCombos"
+            );
 
         if (totalCombos) {
 
             totalCombos.textContent =
-                data.totalCombos || 0;
+                AVAILABLE_COMBOS.length;
 
         }
 
@@ -250,12 +285,15 @@ async function loadDashboard() {
         // =================================================
 
         const totalRevenue =
-            document.getElementById("totalRevenue");
+            document.getElementById(
+                "totalRevenue"
+            );
 
         if (totalRevenue) {
 
             totalRevenue.textContent =
-                "₹" + (data.totalRevenue || 0);
+                "₹" +
+                (data.totalRevenue || 0);
 
         }
 
@@ -280,16 +318,24 @@ async function loadDashboard() {
 function showData(type) {
 
     const modal =
-        document.getElementById("dataModal");
+        document.getElementById(
+            "dataModal"
+        );
 
     const title =
-        document.getElementById("modalTitle");
+        document.getElementById(
+            "modalTitle"
+        );
 
     const description =
-        document.getElementById("modalDescription");
+        document.getElementById(
+            "modalDescription"
+        );
 
     const content =
-        document.getElementById("modalContent");
+        document.getElementById(
+            "modalContent"
+        );
 
 
     if (
@@ -313,6 +359,7 @@ function showData(type) {
 
 
     // USERS
+
     if (type === "users") {
 
         showUsers(
@@ -325,6 +372,7 @@ function showData(type) {
 
 
     // SERVICES
+
     else if (type === "services") {
 
         showServices(
@@ -337,6 +385,7 @@ function showData(type) {
 
 
     // APPOINTMENTS
+
     else if (type === "appointments") {
 
         showAppointments(
@@ -349,6 +398,7 @@ function showData(type) {
 
 
     // REVENUE
+
     else if (type === "revenue") {
 
         showRevenue(
@@ -361,6 +411,7 @@ function showData(type) {
 
 
     // FEEDBACK
+
     else if (type === "feedback") {
 
         showFeedback(
@@ -373,6 +424,7 @@ function showData(type) {
 
 
     // COMBOS
+
     else if (type === "combos") {
 
         showCombos(
@@ -403,13 +455,17 @@ async function showUsers(
         "Customers registered in Beauty Blend.";
 
     content.innerHTML =
-        loadingMessage("Loading Users...");
+        loadingMessage(
+            "Loading Users..."
+        );
 
 
     try {
 
         const response =
-            await fetch("/api/dashboard-data/");
+            await fetch(
+                "/api/dashboard-data/"
+            );
 
         const data =
             await response.json();
@@ -511,9 +567,8 @@ async function showUsers(
 // SHOW SERVICES
 // =====================================================
 // IMPORTANT:
-// This uses AVAILABLE_SERVICES.
-// It does NOT use appointment.service.
-// Therefore customer selections cannot change this list.
+// Uses AVAILABLE_SERVICES.
+// Does NOT use appointment.service.
 // =====================================================
 
 function showServices(
@@ -529,7 +584,9 @@ function showServices(
         "All services available at Beauty Blend.";
 
     content.innerHTML =
-        loadingMessage("Loading Services...");
+        loadingMessage(
+            "Loading Services..."
+        );
 
 
     if (
@@ -610,11 +667,12 @@ function showServices(
 // =====================================================
 // SHOW COMBOS
 // =====================================================
-// Combos remain completely separate from appointments.
-// They are loaded from the Combo table.
+// IMPORTANT:
+// Uses AVAILABLE_COMBOS.
+// Does NOT use appointments.
 // =====================================================
 
-async function showCombos(
+function showCombos(
     title,
     description,
     content
@@ -627,107 +685,82 @@ async function showCombos(
         "All combo packages available at Beauty Blend.";
 
     content.innerHTML =
-        loadingMessage("Loading Combos...");
-
-
-    try {
-
-        const response =
-            await fetch("/api/dashboard-data/");
-
-        const data =
-            await response.json();
-
-
-        if (
-            !data.success ||
-            !data.combos ||
-            data.combos.length === 0
-        ) {
-
-            content.innerHTML =
-                emptyMessage(
-                    "No Combos Yet",
-                    "Combo packages available at Beauty Blend will appear here."
-                );
-
-            return;
-
-        }
-
-
-        let html = "";
-
-
-        data.combos.forEach(
-            function (combo) {
-
-                const name =
-                    combo.name ||
-                    "Combo";
-
-                const comboDescription =
-                    combo.description ||
-                    "";
-
-                const price =
-                    combo.price ||
-                    0;
-
-
-                html += `
-
-                    <div class="service-card">
-
-                        <div>
-
-                            <h3>
-                                ${escapeHTML(
-                                    String(name)
-                                )}
-                            </h3>
-
-                            <p>
-                                ${escapeHTML(
-                                    String(comboDescription)
-                                )}
-                            </p>
-
-                        </div>
-
-                        <div class="service-price">
-                            ₹${escapeHTML(
-                                String(price)
-                            )}
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
+        loadingMessage(
+            "Loading Combos..."
         );
 
 
-        content.innerHTML =
-            html;
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Combos loading error:",
-            error
-        );
+    if (
+        !AVAILABLE_COMBOS ||
+        AVAILABLE_COMBOS.length === 0
+    ) {
 
         content.innerHTML =
             emptyMessage(
-                "Error",
-                "Unable to load combos."
+                "No Combos Yet",
+                "Combo packages available at Beauty Blend will appear here."
             );
 
+        return;
+
     }
+
+
+    let html = "";
+
+
+    AVAILABLE_COMBOS.forEach(
+        function (combo) {
+
+            const name =
+                combo.name ||
+                "Combo";
+
+            const comboDescription =
+                combo.description ||
+                "";
+
+            const price =
+                combo.price ||
+                0;
+
+
+            html += `
+
+                <div class="service-card">
+
+                    <div>
+
+                        <h3>
+                            ${escapeHTML(
+                                String(name)
+                            )}
+                        </h3>
+
+                        <p>
+                            ${escapeHTML(
+                                String(comboDescription)
+                            )}
+                        </p>
+
+                    </div>
+
+                    <div class="service-price">
+                        ₹${escapeHTML(
+                            String(price)
+                        )}
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    content.innerHTML =
+        html;
 
 }
 
@@ -735,7 +768,7 @@ async function showCombos(
 // =====================================================
 // SHOW APPOINTMENTS
 // =====================================================
-// DO NOT CHANGE THIS SECTION.
+// DO NOT CHANGE.
 // Customer-selected services remain here.
 // =====================================================
 
@@ -752,13 +785,17 @@ async function showAppointments(
         "Customer appointments and selected services.";
 
     content.innerHTML =
-        loadingMessage("Loading Appointments...");
+        loadingMessage(
+            "Loading Appointments..."
+        );
 
 
     try {
 
         const response =
-            await fetch("/api/dashboard-data/");
+            await fetch(
+                "/api/dashboard-data/"
+            );
 
         const data =
             await response.json();
@@ -820,7 +857,8 @@ async function showAppointments(
                     "Pending";
 
 
-                let paymentHTML = "";
+                let paymentHTML =
+                    "";
 
 
                 if (
@@ -1039,13 +1077,17 @@ async function showRevenue(
         "Revenue generated from completed payments.";
 
     content.innerHTML =
-        loadingMessage("Loading Revenue...");
+        loadingMessage(
+            "Loading Revenue..."
+        );
 
 
     try {
 
         const response =
-            await fetch("/api/dashboard-data/");
+            await fetch(
+                "/api/dashboard-data/"
+            );
 
         const data =
             await response.json();
@@ -1233,9 +1275,11 @@ async function showRevenue(
                         </div>
 
                         <div class="service-price">
+
                             ₹${escapeHTML(
                                 String(amount)
                             )}
+
                         </div>
 
                     </div>
@@ -1418,7 +1462,9 @@ async function showFeedback(
         "Feedback submitted by Beauty Blend customers.";
 
     content.innerHTML =
-        loadingMessage("Loading Feedback...");
+        loadingMessage(
+            "Loading Feedback..."
+        );
 
 
     try {
@@ -1469,7 +1515,8 @@ async function showFeedback(
                     ) || 0;
 
 
-                let stars = "";
+                let stars =
+                    "";
 
 
                 for (
@@ -1640,7 +1687,9 @@ function escapeHTML(
 ) {
 
     const div =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     div.textContent =
         value;
@@ -1660,6 +1709,7 @@ function closeModal() {
         document.getElementById(
             "dataModal"
         );
+
 
     if (modal) {
 
@@ -1683,6 +1733,7 @@ window.addEventListener(
             document.getElementById(
                 "dataModal"
             );
+
 
         if (
             modal &&
