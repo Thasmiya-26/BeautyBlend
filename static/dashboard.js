@@ -3,9 +3,144 @@
 // Connected to Django + SQLite
 // =====================================================
 
-document.addEventListener("DOMContentLoaded", function () {
-    loadDashboard();
-});
+
+// =====================================================
+// FIXED BEAUTYBLEND SERVICE CATALOGUE
+// These are the services shown on the Services page.
+// They are NOT taken from customer appointments.
+// =====================================================
+
+const AVAILABLE_SERVICES = [
+
+    {
+        name: "Hair Cut",
+        price: 300,
+        description: "Salon service"
+    },
+
+    {
+        name: "Hair Wash",
+        price: 200,
+        description: "Salon service"
+    },
+
+    {
+        name: "Hair Spa",
+        price: 1200,
+        description: "Salon service"
+    },
+
+    {
+        name: "Smoothening",
+        price: 3500,
+        description: "Salon service"
+    },
+
+    {
+        name: "Keratin Treatment",
+        price: 4500,
+        description: "Salon service"
+    },
+
+    {
+        name: "Cleanup",
+        price: 500,
+        description: "Salon service"
+    },
+
+    {
+        name: "Basic Facial",
+        price: 700,
+        description: "Salon service"
+    },
+
+    {
+        name: "Fruit Facial",
+        price: 1000,
+        description: "Salon service"
+    },
+
+    {
+        name: "Gold Facial",
+        price: 1500,
+        description: "Salon service"
+    },
+
+    {
+        name: "Party Makeup",
+        price: 2500,
+        description: "Salon service"
+    },
+
+    {
+        name: "Engagement Makeup",
+        price: 7000,
+        description: "Salon service"
+    },
+
+    {
+        name: "Bridal Makeup",
+        price: 12000,
+        description: "Salon service"
+    },
+
+    {
+        name: "Manicure",
+        price: 500,
+        description: "Salon service"
+    },
+
+    {
+        name: "Pedicure",
+        price: 700,
+        description: "Salon service"
+    },
+
+    {
+        name: "Nail Art",
+        price: 1200,
+        description: "Salon service"
+    },
+
+    {
+        name: "Eyebrow",
+        price: 50,
+        description: "Salon service"
+    },
+
+    {
+        name: "Upper Lip",
+        price: 40,
+        description: "Salon service"
+    },
+
+    {
+        name: "Full Arms Wax",
+        price: 400,
+        description: "Salon service"
+    },
+
+    {
+        name: "Full Legs Wax",
+        price: 600,
+        description: "Salon service"
+    }
+
+];
+
+
+// =====================================================
+// PAGE LOAD
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadDashboard();
+
+    }
+);
 
 
 // =====================================================
@@ -16,67 +151,112 @@ async function loadDashboard() {
 
     try {
 
-        const response = await fetch("/api/dashboard-data/");
-        const data = await response.json();
+        const response =
+            await fetch("/api/dashboard-data/");
+
+        const data =
+            await response.json();
+
 
         if (!data.success) {
-            console.error("Unable to load dashboard data.");
+
+            console.error(
+                "Unable to load dashboard data."
+            );
+
             return;
+
         }
 
+
+        // =================================================
         // TOTAL USERS
-        const totalUsers = document.getElementById("totalUsers");
+        // =================================================
+
+        const totalUsers =
+            document.getElementById("totalUsers");
 
         if (totalUsers) {
-            totalUsers.textContent = data.totalUsers || 0;
+
+            totalUsers.textContent =
+                data.totalUsers || 0;
+
         }
 
 
+        // =================================================
         // TOTAL SERVICES
-        const totalServices = document.getElementById("totalServices");
+        // Always show the actual BeautyBlend catalogue count.
+        // =================================================
+
+        const totalServices =
+            document.getElementById("totalServices");
 
         if (totalServices) {
-            totalServices.textContent = data.totalServices || 0;
+
+            totalServices.textContent =
+                AVAILABLE_SERVICES.length;
+
         }
 
 
+        // =================================================
         // TOTAL APPOINTMENTS
+        // =================================================
+
         const totalAppointments =
             document.getElementById("totalAppointments");
 
         if (totalAppointments) {
+
             totalAppointments.textContent =
                 data.totalAppointments || 0;
+
         }
 
 
+        // =================================================
         // TOTAL FEEDBACK
+        // =================================================
+
         const totalFeedback =
             document.getElementById("totalFeedback");
 
         if (totalFeedback) {
+
             totalFeedback.textContent =
                 data.totalFeedback || 0;
+
         }
 
 
+        // =================================================
         // TOTAL COMBOS
+        // =================================================
+
         const totalCombos =
             document.getElementById("totalCombos");
 
         if (totalCombos) {
+
             totalCombos.textContent =
                 data.totalCombos || 0;
+
         }
 
 
+        // =================================================
         // TOTAL REVENUE
+        // =================================================
+
         const totalRevenue =
             document.getElementById("totalRevenue");
 
         if (totalRevenue) {
+
             totalRevenue.textContent =
                 "₹" + (data.totalRevenue || 0);
+
         }
 
     }
@@ -128,7 +308,8 @@ function showData(type) {
     }
 
 
-    modal.style.display = "flex";
+    modal.style.display =
+        "flex";
 
 
     // USERS
@@ -209,9 +390,14 @@ function showData(type) {
 // SHOW USERS
 // =====================================================
 
-async function showUsers(title, description, content) {
+async function showUsers(
+    title,
+    description,
+    content
+) {
 
-    title.textContent = "Registered Users";
+    title.textContent =
+        "Registered Users";
 
     description.textContent =
         "Customers registered in Beauty Blend.";
@@ -242,54 +428,64 @@ async function showUsers(title, description, content) {
                 );
 
             return;
+
         }
 
 
         let html = "";
 
 
-        data.users.forEach(function (user) {
+        data.users.forEach(
+            function (user) {
 
-            const name =
-                user.name || "Customer";
+                const name =
+                    user.name ||
+                    "Customer";
 
-            const email =
-                user.email || "Email not available";
+                const email =
+                    user.email ||
+                    "Email not available";
 
 
-            html += `
+                html += `
 
-                <div class="data-card">
+                    <div class="data-card">
 
-                    <div class="data-left">
+                        <div class="data-left">
 
-                        <div class="data-avatar">
-                            ${getInitial(name)}
-                        </div>
+                            <div class="data-avatar">
+                                ${getInitial(name)}
+                            </div>
 
-                        <div class="data-info">
+                            <div class="data-info">
 
-                            <h3>
-                                ${escapeHTML(String(name))}
-                            </h3>
+                                <h3>
+                                    ${escapeHTML(
+                                        String(name)
+                                    )}
+                                </h3>
 
-                            <p>
-                                <i class="fa-solid fa-envelope"></i>
-                                ${escapeHTML(String(email))}
-                            </p>
+                                <p>
+                                    <i class="fa-solid fa-envelope"></i>
+                                    ${escapeHTML(
+                                        String(email)
+                                    )}
+                                </p>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+                `;
 
-            `;
+            }
+        );
 
-        });
 
-
-        content.innerHTML = html;
+        content.innerHTML =
+            html;
 
     }
 
@@ -314,56 +510,61 @@ async function showUsers(title, description, content) {
 // =====================================================
 // SHOW SERVICES
 // =====================================================
+// IMPORTANT:
+// This uses AVAILABLE_SERVICES.
+// It does NOT use appointment.service.
+// Therefore customer selections cannot change this list.
+// =====================================================
 
-async function showServices(title, description, content) {
+function showServices(
+    title,
+    description,
+    content
+) {
 
-    title.textContent = "Beauty Services";
+    title.textContent =
+        "Beauty Services";
 
     description.textContent =
-        "Services available at Beauty Blend.";
+        "All services available at Beauty Blend.";
 
     content.innerHTML =
         loadingMessage("Loading Services...");
 
 
-    try {
+    if (
+        !AVAILABLE_SERVICES ||
+        AVAILABLE_SERVICES.length === 0
+    ) {
 
-        const response =
-            await fetch("/api/dashboard-data/");
+        content.innerHTML =
+            emptyMessage(
+                "No Services Yet",
+                "Services available at Beauty Blend will appear here."
+            );
 
-        const data =
-            await response.json();
+        return;
 
-
-        if (
-            !data.success ||
-            !data.services ||
-            data.services.length === 0
-        ) {
-
-            content.innerHTML =
-                emptyMessage(
-                    "No Services Yet",
-                    "Services added by the admin will appear here."
-                );
-
-            return;
-        }
+    }
 
 
-        let html = "";
+    let html = "";
 
 
-        data.services.forEach(function (service) {
+    AVAILABLE_SERVICES.forEach(
+        function (service) {
 
             const name =
-                service.name || "Service";
+                service.name ||
+                "Service";
 
             const serviceDescription =
-                service.description || "";
+                service.description ||
+                "";
 
             const price =
-                service.price || 0;
+                service.price ||
+                0;
 
 
             html += `
@@ -373,7 +574,9 @@ async function showServices(title, description, content) {
                     <div>
 
                         <h3>
-                            ${escapeHTML(String(name))}
+                            ${escapeHTML(
+                                String(name)
+                            )}
                         </h3>
 
                         <p>
@@ -385,34 +588,21 @@ async function showServices(title, description, content) {
                     </div>
 
                     <div class="service-price">
-                        ₹${escapeHTML(String(price))}
+                        ₹${escapeHTML(
+                            String(price)
+                        )}
                     </div>
 
                 </div>
 
             `;
 
-        });
+        }
+    );
 
 
-        content.innerHTML = html;
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Services loading error:",
-            error
-        );
-
-        content.innerHTML =
-            emptyMessage(
-                "Error",
-                "Unable to load services."
-            );
-
-    }
+    content.innerHTML =
+        html;
 
 }
 
@@ -420,13 +610,21 @@ async function showServices(title, description, content) {
 // =====================================================
 // SHOW COMBOS
 // =====================================================
+// Combos remain completely separate from appointments.
+// They are loaded from the Combo table.
+// =====================================================
 
-async function showCombos(title, description, content) {
+async function showCombos(
+    title,
+    description,
+    content
+) {
 
-    title.textContent = "Combo Packages";
+    title.textContent =
+        "Combo Packages";
 
     description.textContent =
-        "Combo packages available at Beauty Blend.";
+        "All combo packages available at Beauty Blend.";
 
     content.innerHTML =
         loadingMessage("Loading Combos...");
@@ -450,58 +648,69 @@ async function showCombos(title, description, content) {
             content.innerHTML =
                 emptyMessage(
                     "No Combos Yet",
-                    "Combo packages will appear here."
+                    "Combo packages available at Beauty Blend will appear here."
                 );
 
             return;
+
         }
 
 
         let html = "";
 
 
-        data.combos.forEach(function (combo) {
+        data.combos.forEach(
+            function (combo) {
 
-            const name =
-                combo.name || "Combo";
+                const name =
+                    combo.name ||
+                    "Combo";
 
-            const comboDescription =
-                combo.description || "";
+                const comboDescription =
+                    combo.description ||
+                    "";
 
-            const price =
-                combo.price || 0;
+                const price =
+                    combo.price ||
+                    0;
 
 
-            html += `
+                html += `
 
-                <div class="service-card">
+                    <div class="service-card">
 
-                    <div>
+                        <div>
 
-                        <h3>
-                            ${escapeHTML(String(name))}
-                        </h3>
+                            <h3>
+                                ${escapeHTML(
+                                    String(name)
+                                )}
+                            </h3>
 
-                        <p>
-                            ${escapeHTML(
-                                String(comboDescription)
+                            <p>
+                                ${escapeHTML(
+                                    String(comboDescription)
+                                )}
+                            </p>
+
+                        </div>
+
+                        <div class="service-price">
+                            ₹${escapeHTML(
+                                String(price)
                             )}
-                        </p>
+                        </div>
 
                     </div>
 
-                    <div class="service-price">
-                        ₹${escapeHTML(String(price))}
-                    </div>
+                `;
 
-                </div>
-
-            `;
-
-        });
+            }
+        );
 
 
-        content.innerHTML = html;
+        content.innerHTML =
+            html;
 
     }
 
@@ -526,10 +735,18 @@ async function showCombos(title, description, content) {
 // =====================================================
 // SHOW APPOINTMENTS
 // =====================================================
+// DO NOT CHANGE THIS SECTION.
+// Customer-selected services remain here.
+// =====================================================
 
-async function showAppointments(title, description, content) {
+async function showAppointments(
+    title,
+    description,
+    content
+) {
 
-    title.textContent = "Appointments";
+    title.textContent =
+        "Appointments";
 
     description.textContent =
         "Customer appointments and selected services.";
@@ -560,221 +777,230 @@ async function showAppointments(title, description, content) {
                 );
 
             return;
+
         }
 
 
         let html = "";
 
 
-        data.appointments.forEach(function (appointment) {
+        data.appointments.forEach(
+            function (appointment) {
 
-            const customerName =
-                appointment.customer_name ||
-                "Customer";
+                const customerName =
+                    appointment.customer_name ||
+                    "Customer";
 
-            const phone =
-                appointment.phone ||
-                "Not available";
+                const phone =
+                    appointment.phone ||
+                    "Not available";
 
-            const services =
-                appointment.service ||
-                "Not available";
+                const services =
+                    appointment.service ||
+                    "Not available";
 
-            const date =
-                appointment.date ||
-                "Not available";
+                const date =
+                    appointment.date ||
+                    "Not available";
 
-            const time =
-                appointment.time ||
-                "Not available";
+                const time =
+                    appointment.time ||
+                    "Not available";
 
-            const amount =
-                appointment.amount ||
-                0;
+                const amount =
+                    appointment.amount ||
+                    0;
 
-            const status =
-                appointment.status ||
-                "Booked";
+                const status =
+                    appointment.status ||
+                    "Booked";
 
-            const paymentStatus =
-                appointment.payment_status ||
-                "Pending";
-
-
-            let paymentHTML = "";
+                const paymentStatus =
+                    appointment.payment_status ||
+                    "Pending";
 
 
-            if (
-                String(paymentStatus).toLowerCase() === "paid"
-            ) {
+                let paymentHTML = "";
 
-                paymentHTML = `
 
-                    <span class="status-badge paid">
-                        Paid
-                    </span>
+                if (
+                    String(
+                        paymentStatus
+                    ).toLowerCase() === "paid"
+                ) {
 
-                `;
+                    paymentHTML = `
 
-            }
-
-            else {
-
-                paymentHTML = `
-
-                    <div class="payment-action">
-
-                        <span class="status-badge pending">
-                            Pending
+                        <span class="status-badge paid">
+                            Paid
                         </span>
 
-                        <button
-                            type="button"
-                            class="mark-paid-btn"
-                            onclick="markPaymentPaid(${appointment.id})"
-                        >
-                            <i class="fa-solid fa-check"></i>
-                            Mark as Paid
-                        </button>
+                    `;
+
+                }
+
+                else {
+
+                    paymentHTML = `
+
+                        <div class="payment-action">
+
+                            <span class="status-badge pending">
+                                Pending
+                            </span>
+
+                            <button
+                                type="button"
+                                class="mark-paid-btn"
+                                onclick="markPaymentPaid(${appointment.id})"
+                            >
+
+                                <i class="fa-solid fa-check"></i>
+
+                                Mark as Paid
+
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                html += `
+
+                    <div class="appointment-card">
+
+                        <div class="appointment-header">
+
+                            <div class="data-left">
+
+                                <div class="data-avatar">
+                                    ${getInitial(customerName)}
+                                </div>
+
+                                <div class="data-info">
+
+                                    <h3>
+                                        ${escapeHTML(
+                                            String(customerName)
+                                        )}
+                                    </h3>
+
+                                    <p>
+                                        <i class="fa-solid fa-phone"></i>
+                                        ${escapeHTML(
+                                            String(phone)
+                                        )}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="appointment-details">
+
+                            <div class="appointment-detail">
+
+                                <span class="detail-label">
+                                    Services
+                                </span>
+
+                                <strong>
+                                    ${escapeHTML(
+                                        String(services)
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="appointment-detail">
+
+                                <span class="detail-label">
+                                    Date
+                                </span>
+
+                                <strong>
+                                    ${escapeHTML(
+                                        String(date)
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="appointment-detail">
+
+                                <span class="detail-label">
+                                    Time
+                                </span>
+
+                                <strong>
+                                    ${escapeHTML(
+                                        String(time)
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="appointment-detail">
+
+                                <span class="detail-label">
+                                    Amount
+                                </span>
+
+                                <strong>
+                                    ₹${escapeHTML(
+                                        String(amount)
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="appointment-detail">
+
+                                <span class="detail-label">
+                                    Status
+                                </span>
+
+                                <span class="status-badge">
+                                    ${escapeHTML(
+                                        String(status)
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            <div class="appointment-detail">
+
+                                <span class="detail-label">
+                                    Payment
+                                </span>
+
+                                ${paymentHTML}
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 `;
 
             }
+        );
 
 
-            html += `
-
-                <div class="appointment-card">
-
-                    <div class="appointment-header">
-
-                        <div class="data-left">
-
-                            <div class="data-avatar">
-                                ${getInitial(customerName)}
-                            </div>
-
-                            <div class="data-info">
-
-                                <h3>
-                                    ${escapeHTML(
-                                        String(customerName)
-                                    )}
-                                </h3>
-
-                                <p>
-                                    <i class="fa-solid fa-phone"></i>
-                                    ${escapeHTML(
-                                        String(phone)
-                                    )}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="appointment-details">
-
-                        <div class="appointment-detail">
-
-                            <span class="detail-label">
-                                Services
-                            </span>
-
-                            <strong>
-                                ${escapeHTML(
-                                    String(services)
-                                )}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="appointment-detail">
-
-                            <span class="detail-label">
-                                Date
-                            </span>
-
-                            <strong>
-                                ${escapeHTML(
-                                    String(date)
-                                )}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="appointment-detail">
-
-                            <span class="detail-label">
-                                Time
-                            </span>
-
-                            <strong>
-                                ${escapeHTML(
-                                    String(time)
-                                )}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="appointment-detail">
-
-                            <span class="detail-label">
-                                Amount
-                            </span>
-
-                            <strong>
-                                ₹${escapeHTML(
-                                    String(amount)
-                                )}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="appointment-detail">
-
-                            <span class="detail-label">
-                                Status
-                            </span>
-
-                            <span class="status-badge">
-                                ${escapeHTML(
-                                    String(status)
-                                )}
-                            </span>
-
-                        </div>
-
-
-                        <div class="appointment-detail">
-
-                            <span class="detail-label">
-                                Payment
-                            </span>
-
-                            ${paymentHTML}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        });
-
-
-        content.innerHTML = html;
+        content.innerHTML =
+            html;
 
     }
 
@@ -800,9 +1026,14 @@ async function showAppointments(title, description, content) {
 // SHOW REVENUE
 // =====================================================
 
-async function showRevenue(title, description, content) {
+async function showRevenue(
+    title,
+    description,
+    content
+) {
 
-    title.textContent = "Total Revenue";
+    title.textContent =
+        "Total Revenue";
 
     description.textContent =
         "Revenue generated from completed payments.";
@@ -834,12 +1065,16 @@ async function showRevenue(title, description, content) {
 
 
         const totalRevenue =
-            parseFloat(data.totalRevenue) || 0;
+            parseFloat(
+                data.totalRevenue
+            ) || 0;
 
 
-        // Get only PAID appointments
         const paidAppointments =
-            (data.appointments || []).filter(
+            (
+                data.appointments ||
+                []
+            ).filter(
                 function (appointment) {
 
                     return String(
@@ -887,7 +1122,9 @@ async function showRevenue(title, description, content) {
         `;
 
 
-        if (paidAppointments.length === 0) {
+        if (
+            paidAppointments.length === 0
+        ) {
 
             html += `
 
@@ -908,7 +1145,8 @@ async function showRevenue(title, description, content) {
 
             `;
 
-            content.innerHTML = html;
+            content.innerHTML =
+                html;
 
             return;
 
@@ -924,84 +1162,92 @@ async function showRevenue(title, description, content) {
         `;
 
 
-        paidAppointments.forEach(function (appointment) {
+        paidAppointments.forEach(
+            function (appointment) {
 
-            const customerName =
-                appointment.customer_name ||
-                "Customer";
+                const customerName =
+                    appointment.customer_name ||
+                    "Customer";
 
-            const service =
-                appointment.service ||
-                "Service";
+                const service =
+                    appointment.service ||
+                    "Service";
 
-            const date =
-                appointment.date ||
-                "Not available";
+                const date =
+                    appointment.date ||
+                    "Not available";
 
-            const time =
-                appointment.time ||
-                "Not available";
+                const time =
+                    appointment.time ||
+                    "Not available";
 
-            const amount =
-                appointment.amount ||
-                0;
+                const amount =
+                    appointment.amount ||
+                    0;
 
 
-            html += `
+                html += `
 
-                <div class="data-card">
+                    <div class="data-card">
 
-                    <div class="data-left">
+                        <div class="data-left">
 
-                        <div class="data-avatar">
-                            ${getInitial(customerName)}
+                            <div class="data-avatar">
+                                ${getInitial(customerName)}
+                            </div>
+
+                            <div class="data-info">
+
+                                <h3>
+                                    ${escapeHTML(
+                                        String(customerName)
+                                    )}
+                                </h3>
+
+                                <p>
+                                    ${escapeHTML(
+                                        String(service)
+                                    )}
+                                </p>
+
+                                <p>
+
+                                    <i class="fa-solid fa-calendar"></i>
+
+                                    ${escapeHTML(
+                                        String(date)
+                                    )}
+
+                                    &nbsp;&nbsp;
+
+                                    <i class="fa-solid fa-clock"></i>
+
+                                    ${escapeHTML(
+                                        String(time)
+                                    )}
+
+                                </p>
+
+                            </div>
+
                         </div>
 
-                        <div class="data-info">
-
-                            <h3>
-                                ${escapeHTML(
-                                    String(customerName)
-                                )}
-                            </h3>
-
-                            <p>
-                                ${escapeHTML(
-                                    String(service)
-                                )}
-                            </p>
-
-                            <p>
-                                <i class="fa-solid fa-calendar"></i>
-                                ${escapeHTML(
-                                    String(date)
-                                )}
-                                &nbsp;&nbsp;
-
-                                <i class="fa-solid fa-clock"></i>
-                                ${escapeHTML(
-                                    String(time)
-                                )}
-                            </p>
-
+                        <div class="service-price">
+                            ₹${escapeHTML(
+                                String(amount)
+                            )}
                         </div>
 
                     </div>
 
-                    <div class="service-price">
-                        ₹${escapeHTML(
-                            String(amount)
-                        )}
-                    </div>
+                `;
 
-                </div>
-
-            `;
-
-        });
+            }
+        );
 
 
-        content.innerHTML = html;
+        content.innerHTML =
+            html;
 
     }
 
@@ -1027,11 +1273,15 @@ async function showRevenue(title, description, content) {
 // MARK PAYMENT AS PAID
 // =====================================================
 
-async function markPaymentPaid(appointmentId) {
+async function markPaymentPaid(
+    appointmentId
+) {
 
     if (!appointmentId) {
 
-        alert("Appointment ID is missing.");
+        alert(
+            "Appointment ID is missing."
+        );
 
         return;
 
@@ -1045,7 +1295,9 @@ async function markPaymentPaid(appointmentId) {
 
 
     if (!confirmation) {
+
         return;
+
     }
 
 
@@ -1059,13 +1311,17 @@ async function markPaymentPaid(appointmentId) {
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body: JSON.stringify({
+
                         appointment_id:
                             appointmentId
+
                     })
 
                 }
@@ -1087,13 +1343,19 @@ async function markPaymentPaid(appointmentId) {
 
 
             const title =
-                document.getElementById("modalTitle");
+                document.getElementById(
+                    "modalTitle"
+                );
 
             const description =
-                document.getElementById("modalDescription");
+                document.getElementById(
+                    "modalDescription"
+                );
 
             const content =
-                document.getElementById("modalContent");
+                document.getElementById(
+                    "modalContent"
+                );
 
 
             if (
@@ -1143,7 +1405,11 @@ async function markPaymentPaid(appointmentId) {
 // SHOW FEEDBACK
 // =====================================================
 
-async function showFeedback(title, description, content) {
+async function showFeedback(
+    title,
+    description,
+    content
+) {
 
     title.textContent =
         "Customer Feedback";
@@ -1158,7 +1424,9 @@ async function showFeedback(title, description, content) {
     try {
 
         const response =
-            await fetch("/api/dashboard-data/");
+            await fetch(
+                "/api/dashboard-data/"
+            );
 
         const data =
             await response.json();
@@ -1184,77 +1452,82 @@ async function showFeedback(title, description, content) {
         let html = "";
 
 
-        data.feedback.forEach(function (item) {
+        data.feedback.forEach(
+            function (item) {
 
-            const customerName =
-                item.customer_name ||
-                "Customer";
+                const customerName =
+                    item.customer_name ||
+                    "Customer";
 
-            const message =
-                item.message ||
-                "No message";
+                const message =
+                    item.message ||
+                    "No message";
 
-            const rating =
-                parseInt(item.rating) || 0;
-
-
-            let stars = "";
-
-
-            for (
-                let i = 1;
-                i <= 5;
-                i++
-            ) {
-
-                stars +=
-                    i <= rating
-                        ? "★"
-                        : "☆";
-
-            }
+                const rating =
+                    parseInt(
+                        item.rating
+                    ) || 0;
 
 
-            html += `
+                let stars = "";
 
-                <div class="data-card">
 
-                    <div class="data-left">
+                for (
+                    let i = 1;
+                    i <= 5;
+                    i++
+                ) {
 
-                        <div class="data-avatar">
-                            ${getInitial(customerName)}
-                        </div>
+                    stars +=
+                        i <= rating
+                            ? "★"
+                            : "☆";
 
-                        <div class="data-info">
+                }
 
-                            <h3>
-                                ${escapeHTML(
-                                    String(customerName)
-                                )}
-                            </h3>
 
-                            <p class="rating">
-                                ${stars}
-                            </p>
+                html += `
 
-                            <p>
-                                ${escapeHTML(
-                                    String(message)
-                                )}
-                            </p>
+                    <div class="data-card">
+
+                        <div class="data-left">
+
+                            <div class="data-avatar">
+                                ${getInitial(customerName)}
+                            </div>
+
+                            <div class="data-info">
+
+                                <h3>
+                                    ${escapeHTML(
+                                        String(customerName)
+                                    )}
+                                </h3>
+
+                                <p class="rating">
+                                    ${stars}
+                                </p>
+
+                                <p>
+                                    ${escapeHTML(
+                                        String(message)
+                                    )}
+                                </p>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
+                `;
 
-            `;
+            }
+        );
 
-        });
 
-
-        content.innerHTML = html;
+        content.innerHTML =
+            html;
 
     }
 
@@ -1277,38 +1550,12 @@ async function showFeedback(title, description, content) {
 
 
 // =====================================================
-// EMPTY SECTION
-// =====================================================
-
-function showEmptySection(
-    title,
-    description,
-    content,
-    sectionName
-) {
-
-    title.textContent =
-        sectionName;
-
-    description.textContent =
-        sectionName +
-        " information from the database.";
-
-    content.innerHTML =
-        emptyMessage(
-            "No Data Yet",
-            sectionName +
-            " data will appear here."
-        );
-
-}
-
-
-// =====================================================
 // LOADING MESSAGE
 // =====================================================
 
-function loadingMessage(message) {
+function loadingMessage(
+    message
+) {
 
     return `
 
@@ -1335,7 +1582,10 @@ function loadingMessage(message) {
 // EMPTY MESSAGE
 // =====================================================
 
-function emptyMessage(title, message) {
+function emptyMessage(
+    title,
+    message
+) {
 
     return `
 
@@ -1362,11 +1612,16 @@ function emptyMessage(title, message) {
 // GET INITIAL
 // =====================================================
 
-function getInitial(name) {
+function getInitial(
+    name
+) {
 
     if (!name) {
+
         return "C";
+
     }
+
 
     return String(name)
         .trim()
@@ -1380,7 +1635,9 @@ function getInitial(name) {
 // ESCAPE HTML
 // =====================================================
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
     const div =
         document.createElement("div");
@@ -1400,7 +1657,9 @@ function escapeHTML(value) {
 function closeModal() {
 
     const modal =
-        document.getElementById("dataModal");
+        document.getElementById(
+            "dataModal"
+        );
 
     if (modal) {
 
@@ -1421,7 +1680,9 @@ window.addEventListener(
     function (event) {
 
         const modal =
-            document.getElementById("dataModal");
+            document.getElementById(
+                "dataModal"
+            );
 
         if (
             modal &&
