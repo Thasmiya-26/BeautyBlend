@@ -1,9 +1,8 @@
-from django.shortcuts import render
-from django.contrib.auth.hashers import make_password, check_password
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
 from decimal import Decimal, InvalidOperation
+
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import (
     User,
@@ -12,7 +11,7 @@ from .models import (
     Appointment,
     Payment,
     Feedback,
-    Combo
+    Combo,
 )
 
 
@@ -33,7 +32,7 @@ def login_page(request):
 
 
 def forgot_password_page(request):
-    return render(request, "forgotpassword.html")
+    return render(request, "forgot-password.html")
 
 
 def services_page(request):
@@ -56,7 +55,7 @@ def feedback_page(request):
     return render(request, "feedback.html")
 
 
-def combos_page(request):
+def combo_page(request):
     return render(request, "combo.html")
 
 
@@ -69,7 +68,7 @@ def about_page(request):
 
 
 # =========================================================
-# REGISTER USER
+# USER REGISTRATION
 # =========================================================
 
 @csrf_exempt
@@ -78,104 +77,64 @@ def register_user(request):
     if request.method != "POST":
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
-        data = json.loads(request.body)
+        data = request.POST
 
         name = data.get("name", "").strip()
-        email = data.get("email", "").strip()
+        email = data.get("email", "").strip().lower()
         phone = data.get("phone", "").strip()
-        password = data.get("password", "")
+        password = data.get("password", "").strip()
 
-        if not name:
+        if not name or not email or not phone or not password:
             return JsonResponse({
                 "success": False,
-                "message": "Please enter your full name."
+                "message": "All fields are required."
             })
 
-        if not all(char.isalpha() or char.isspace() for char in name):
-            return JsonResponse({
-                "success": False,
-                "message": "Please enter alphabets only in the name."
-            })
-
-        if not email:
-            return JsonResponse({
-                "success": False,
-                "message": "Please enter your email address."
-            })
-
-        if not phone:
-            return JsonResponse({
-                "success": False,
-                "message": "Please enter your phone number."
-            })
-
-        if not phone.isdigit():
-            return JsonResponse({
-                "success": False,
-                "message": "Phone number must contain digits only."
-            })
-
-        if len(phone) != 10:
-            return JsonResponse({
-                "success": False,
-                "message": "Phone number must contain exactly 10 digits."
-            })
-
-        if not password:
-            return JsonResponse({
-                "success": False,
-                "message": "Please enter your password."
-            })
-
-        if len(password) < 8:
-            return JsonResponse({
-                "success": False,
-                "message": "Password must contain at least 8 characters."
-            })
-
+        # Check duplicate email
         if User.objects.filter(email=email).exists():
             return JsonResponse({
                 "success": False,
                 "message": "Email already registered."
             })
 
+        # Check duplicate phone
         if User.objects.filter(phone=phone).exists():
             return JsonResponse({
                 "success": False,
                 "message": "Phone number already registered."
             })
 
-        User.objects.create(
+        user = User.objects.create(
             name=name,
             email=email,
             phone=phone,
-            password=make_password(password)
+            password=password
         )
 
         return JsonResponse({
             "success": True,
-            "message": "Registration successful!"
-        })
-
-    except json.JSONDecodeError:
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid data received."
+            "message": "Registration successful.",
+            "user": {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "phone": user.phone,
+            }
         })
 
     except Exception as e:
         return JsonResponse({
             "success": False,
             "message": str(e)
-        })
+        }, status=500)
 
 
 # =========================================================
-# LOGIN USER
+# USER LOGIN
 # =========================================================
 
 @csrf_exempt
@@ -184,55 +143,48 @@ def login_user(request):
     if request.method != "POST":
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
-        data = json.loads(request.body)
+        data = request.POST
 
-        email = data.get("email", "").strip()
-        password = data.get("password", "")
+        email = data.get("email", "").strip().lower()
+        password = data.get("password", "").strip()
 
         if not email or not password:
             return JsonResponse({
                 "success": False,
-                "message": "Please enter email and password."
+                "message": "Email and password are required."
             })
 
-        try:
-            user = User.objects.get(email=email)
+        user = User.objects.filter(
+            email=email,
+            password=password
+        ).first()
 
-        except User.DoesNotExist:
+        if not user:
             return JsonResponse({
                 "success": False,
-                "message": "Email not registered."
-            })
-
-        if not check_password(password, user.password):
-            return JsonResponse({
-                "success": False,
-                "message": "Invalid password."
+                "message": "Invalid email or password."
             })
 
         return JsonResponse({
             "success": True,
-            "message": "Login successful!",
-            "name": user.name,
-            "email": user.email,
-            "phone": user.phone
-        })
-
-    except json.JSONDecodeError:
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid data received."
+            "message": "Login successful.",
+            "user": {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "phone": user.phone,
+            }
         })
 
     except Exception as e:
         return JsonResponse({
             "success": False,
             "message": str(e)
-        })
+        }, status=500)
 
 
 # =========================================================
@@ -245,99 +197,42 @@ def reset_password(request):
     if request.method != "POST":
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
+        data = request.POST
 
-        data = json.loads(request.body)
+        email = data.get("email", "").strip().lower()
+        new_password = data.get("password", "").strip()
 
-        email = data.get(
-            "email",
-            ""
-        ).strip()
-
-        new_password = data.get(
-            "new_password",
-            ""
-        )
-
-        # -------------------------------------------------
-        # VALIDATE EMAIL
-        # -------------------------------------------------
-
-        if not email:
-
+        if not email or not new_password:
             return JsonResponse({
                 "success": False,
-                "message": "Please enter your registered email."
+                "message": "Email and new password are required."
             })
 
-        # -------------------------------------------------
-        # VALIDATE PASSWORD
-        # -------------------------------------------------
+        user = User.objects.filter(email=email).first()
 
-        if not new_password:
-
+        if not user:
             return JsonResponse({
                 "success": False,
-                "message": "Please enter a new password."
+                "message": "User not found."
             })
 
-        if len(new_password) < 8:
-
-            return JsonResponse({
-                "success": False,
-                "message": "Password must contain at least 8 characters."
-            })
-
-        # -------------------------------------------------
-        # FIND USER USING EMAIL
-        # -------------------------------------------------
-
-        try:
-
-            user = User.objects.get(
-                email__iexact=email
-            )
-
-        except User.DoesNotExist:
-
-            return JsonResponse({
-                "success": False,
-                "message": "No account found with this email."
-            })
-
-        # -------------------------------------------------
-        # UPDATE PASSWORD
-        # -------------------------------------------------
-
-        user.password = make_password(
-            new_password
-        )
-
-        user.save(
-            update_fields=["password"]
-        )
+        user.password = new_password
+        user.save()
 
         return JsonResponse({
             "success": True,
-            "message": "Password reset successfully! Please login with your new password."
-        })
-
-    except json.JSONDecodeError:
-
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid data received."
+            "message": "Password reset successfully."
         })
 
     except Exception as e:
-
         return JsonResponse({
             "success": False,
             "message": str(e)
-        })
+        }, status=500)
 
 
 # =========================================================
@@ -350,70 +245,46 @@ def admin_login(request):
     if request.method != "POST":
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
+        data = request.POST
 
-        data = json.loads(request.body)
-
-        username = data.get(
-            "username",
-            ""
-        ).strip()
-
-        password = data.get(
-            "password",
-            ""
-        )
+        username = data.get("username", "").strip()
+        password = data.get("password", "").strip()
 
         if not username or not password:
             return JsonResponse({
                 "success": False,
-                "message": "Please enter username and password."
+                "message": "Username and password are required."
             })
 
-        try:
+        admin = Admin.objects.filter(
+            username=username,
+            password=password
+        ).first()
 
-            admin = Admin.objects.get(
-                username=username
-            )
-
-        except Admin.DoesNotExist:
-
+        if not admin:
             return JsonResponse({
                 "success": False,
-                "message": "Admin not found."
-            })
-
-        if not check_password(
-            password,
-            admin.password
-        ):
-
-            return JsonResponse({
-                "success": False,
-                "message": "Incorrect Password!"
+                "message": "Invalid admin username or password."
             })
 
         return JsonResponse({
             "success": True,
-            "message": "Admin login successful!"
-        })
-
-    except json.JSONDecodeError:
-
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid data received."
+            "message": "Admin login successful.",
+            "admin": {
+                "id": admin.id,
+                "username": admin.username
+            }
         })
 
     except Exception as e:
-
         return JsonResponse({
             "success": False,
             "message": str(e)
-        })
+        }, status=500)
 
 
 # =========================================================
@@ -426,40 +297,24 @@ def add_service(request):
     if request.method != "POST":
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
+        data = request.POST
 
-        data = json.loads(request.body)
-
-        name = data.get(
-            "name",
-            ""
-        ).strip()
-
-        price = data.get(
-            "price",
-            0
-        )
-
-        description = data.get(
-            "description",
-            "Salon service"
-        ).strip()
+        name = data.get("name", "").strip()
+        description = data.get("description", "").strip()
+        price = data.get("price", "0").strip()
 
         if not name:
-
             return JsonResponse({
                 "success": False,
                 "message": "Service name is required."
             })
 
-        service = Service.objects.filter(
-            name=name
-        ).first()
-
-        if service:
+        if Service.objects.filter(name=name).exists():
+            service = Service.objects.filter(name=name).first()
 
             return JsonResponse({
                 "success": True,
@@ -467,42 +322,111 @@ def add_service(request):
                 "service": {
                     "id": service.id,
                     "name": service.name,
+                    "description": service.description,
                     "price": str(service.price),
-                    "description": service.description
+                    "duration": service.duration,
                 }
             })
+
+        try:
+            price_value = Decimal(price)
+        except (InvalidOperation, ValueError):
+            price_value = Decimal("0")
 
         service = Service.objects.create(
             name=name,
             description=description,
-            price=price,
+            price=price_value,
             duration=0
         )
 
         return JsonResponse({
             "success": True,
-            "message": "Service saved to database successfully!",
+            "message": "Service added successfully.",
             "service": {
                 "id": service.id,
                 "name": service.name,
+                "description": service.description,
                 "price": str(service.price),
-                "description": service.description
+                "duration": service.duration,
             }
         })
 
-    except json.JSONDecodeError:
-
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid JSON data."
-        })
-
     except Exception as e:
-
         return JsonResponse({
             "success": False,
             "message": str(e)
+        }, status=500)
+
+
+# =========================================================
+# ADD COMBO
+# =========================================================
+
+@csrf_exempt
+def add_combo(request):
+
+    if request.method != "POST":
+        return JsonResponse({
+            "success": False,
+            "message": "Only POST request is allowed."
+        }, status=405)
+
+    try:
+        data = request.POST
+
+        name = data.get("name", "").strip()
+        description = data.get("description", "").strip()
+        price = data.get("price", "0").strip()
+
+        if not name:
+            return JsonResponse({
+                "success": False,
+                "message": "Combo name is required."
+            })
+
+        # Check whether combo already exists
+        combo = Combo.objects.filter(name=name).first()
+
+        if combo:
+            return JsonResponse({
+                "success": True,
+                "message": "Combo already exists in database.",
+                "combo": {
+                    "id": combo.id,
+                    "name": combo.name,
+                    "description": combo.description,
+                    "price": str(combo.price),
+                }
+            })
+
+        try:
+            price_value = Decimal(price)
+        except (InvalidOperation, ValueError):
+            price_value = Decimal("0")
+
+        combo = Combo.objects.create(
+            name=name,
+            description=description,
+            price=price_value
+        )
+
+        return JsonResponse({
+            "success": True,
+            "message": "Combo added successfully.",
+            "combo": {
+                "id": combo.id,
+                "name": combo.name,
+                "description": combo.description,
+                "price": str(combo.price),
+            }
         })
+
+    except Exception as e:
+        return JsonResponse({
+            "success": False,
+            "message": str(e)
+        }, status=500)
 
 
 # =========================================================
@@ -515,137 +439,89 @@ def book_appointment(request):
     if request.method != "POST":
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
+        import json
 
-        data = json.loads(request.body)
+        if request.body:
+            data = json.loads(request.body.decode("utf-8"))
+        else:
+            data = request.POST
 
-        customer_name = data.get(
-            "customer_name",
-            ""
+        customer_name = str(
+            data.get("customer_name", "")
         ).strip()
 
-        phone = data.get(
-            "phone",
-            ""
+        phone = str(
+            data.get("phone", "")
         ).strip()
 
-        date = data.get(
-            "date",
-            ""
+        date = str(
+            data.get("date", "")
         ).strip()
 
-        time = data.get(
-            "time",
-            ""
+        time = str(
+            data.get("time", "")
         ).strip()
 
-        payment_method = data.get(
-            "payment_method",
-            ""
-        ).strip()
-
-        services = data.get(
-            "services",
-            []
-        )
+        services = data.get("services", [])
 
         if not customer_name:
-
             return JsonResponse({
                 "success": False,
                 "message": "Customer name is required."
             })
 
         if not phone:
-
             return JsonResponse({
                 "success": False,
                 "message": "Phone number is required."
             })
 
-        if not phone.isdigit() or len(phone) != 10:
-
-            return JsonResponse({
-                "success": False,
-                "message": "Phone number must contain exactly 10 digits."
-            })
-
         if not date:
-
             return JsonResponse({
                 "success": False,
-                "message": "Appointment date is required."
+                "message": "Date is required."
             })
 
         if not time:
-
             return JsonResponse({
                 "success": False,
-                "message": "Appointment time is required."
+                "message": "Time is required."
             })
 
-        if not payment_method:
-
-            return JsonResponse({
-                "success": False,
-                "message": "Payment method is required."
-            })
-
-        if not services or not isinstance(services, list):
-
+        if not isinstance(services, list) or len(services) == 0:
             return JsonResponse({
                 "success": False,
                 "message": "Please select at least one service."
             })
 
         service_names = []
-
-        total_amount = Decimal("0.00")
+        total_amount = Decimal("0")
 
         for item in services:
 
             service_name = str(
-                item.get(
-                    "name",
-                    "Service"
-                )
+                item.get("name", "Service")
             ).strip()
 
             price = Decimal(
-                str(
-                    item.get(
-                        "price",
-                        0
-                    )
-                )
+                str(item.get("price", 0))
             )
 
             quantity = int(
-                item.get(
-                    "quantity",
-                    1
-                )
+                item.get("quantity", 1)
             )
-
-            if quantity < 1:
-                quantity = 1
 
             service_names.append(
-                service_name +
-                " × " +
-                str(quantity)
+                service_name + " × " + str(quantity)
             )
 
-            total_amount += (
-                price * quantity
-            )
+            total_amount += price * quantity
 
-        service_text = ", ".join(
-            service_names
-        )
+        service_text = ", ".join(service_names)
 
         appointment = Appointment.objects.create(
             customer_name=customer_name,
@@ -661,13 +537,13 @@ def book_appointment(request):
         Payment.objects.create(
             customer_name=customer_name,
             amount=total_amount,
-            payment_method=payment_method,
+            payment_method="Not Selected",
             payment_status="Pending"
         )
 
         return JsonResponse({
             "success": True,
-            "message": "Appointment booked successfully!",
+            "message": "Appointment booked successfully.",
             "appointment": {
                 "id": appointment.id,
                 "customer_name": appointment.customer_name,
@@ -675,39 +551,17 @@ def book_appointment(request):
                 "service": appointment.service,
                 "date": appointment.date,
                 "time": appointment.time,
-                "amount": str(
-                    appointment.amount
-                ),
+                "amount": str(appointment.amount),
                 "status": appointment.status,
                 "payment_status": appointment.payment_status,
-                "payment_method": payment_method
             }
         })
 
-    except json.JSONDecodeError:
-
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid JSON data."
-        })
-
-    except (
-        InvalidOperation,
-        ValueError,
-        TypeError
-    ):
-
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid service or price data."
-        })
-
     except Exception as e:
-
         return JsonResponse({
             "success": False,
             "message": str(e)
-        })
+        }, status=500)
 
 
 # =========================================================
@@ -718,92 +572,58 @@ def book_appointment(request):
 def mark_payment_paid(request):
 
     if request.method != "POST":
-
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
+        import json
 
-        data = json.loads(request.body)
+        if request.body:
+            data = json.loads(request.body.decode("utf-8"))
+        else:
+            data = request.POST
 
-        appointment_id = data.get(
-            "appointment_id"
-        )
+        appointment_id = data.get("appointment_id")
 
         if not appointment_id:
-
             return JsonResponse({
                 "success": False,
                 "message": "Appointment ID is required."
             })
 
-        try:
+        appointment = Appointment.objects.filter(
+            id=appointment_id
+        ).first()
 
-            appointment = Appointment.objects.get(
-                id=appointment_id
-            )
-
-        except Appointment.DoesNotExist:
-
+        if not appointment:
             return JsonResponse({
                 "success": False,
                 "message": "Appointment not found."
             })
 
-        if appointment.payment_status == "Paid":
-
-            return JsonResponse({
-                "success": True,
-                "message": "Payment is already marked as paid.",
-                "payment_status": "Paid"
-            })
-
         appointment.payment_status = "Paid"
+        appointment.save()
 
-        appointment.save(
-            update_fields=[
-                "payment_status"
-            ]
-        )
-
-        payment = Payment.objects.filter(
+        Payment.objects.filter(
             customer_name=appointment.customer_name,
-            amount=appointment.amount,
-            payment_status="Pending"
-        ).order_by("-id").first()
-
-        if payment:
-
-            payment.payment_status = "Paid"
-
-            payment.save(
-                update_fields=[
-                    "payment_status"
-                ]
-            )
+            amount=appointment.amount
+        ).update(
+            payment_status="Paid",
+            payment_method="Online"
+        )
 
         return JsonResponse({
             "success": True,
-            "message": "Payment marked as paid successfully!",
-            "appointment_id": appointment.id,
-            "payment_status": appointment.payment_status
-        })
-
-    except json.JSONDecodeError:
-
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid JSON data."
+            "message": "Payment marked as paid."
         })
 
     except Exception as e:
-
         return JsonResponse({
             "success": False,
             "message": str(e)
-        })
+        }, status=500)
 
 
 # =========================================================
@@ -814,50 +634,33 @@ def mark_payment_paid(request):
 def submit_feedback(request):
 
     if request.method != "POST":
-
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
+            "message": "Only POST request is allowed."
+        }, status=405)
 
     try:
-
-        data = json.loads(request.body)
-
-        rating = data.get(
-            "rating",
-            0
-        )
-
-        message = data.get(
-            "message",
-            ""
-        ).strip()
+        data = request.POST
 
         customer_name = data.get(
-            "customer_name",
-            "Customer"
+            "customer_name", ""
         ).strip()
 
-        if (
-            not rating
-            or int(rating) < 1
-            or int(rating) > 5
-        ):
+        rating = data.get(
+            "rating", "0"
+        ).strip()
 
+        message = data.get(
+            "message", ""
+        ).strip()
+
+        if not customer_name:
             return JsonResponse({
                 "success": False,
-                "message": "Please select a valid rating."
+                "message": "Customer name is required."
             })
 
-        if not message:
-
-            return JsonResponse({
-                "success": False,
-                "message": "Please write your feedback."
-            })
-
-        Feedback.objects.create(
+        feedback = Feedback.objects.create(
             customer_name=customer_name,
             rating=int(rating),
             message=message
@@ -865,22 +668,20 @@ def submit_feedback(request):
 
         return JsonResponse({
             "success": True,
-            "message": "Thank you for your feedback!"
-        })
-
-    except json.JSONDecodeError:
-
-        return JsonResponse({
-            "success": False,
-            "message": "Invalid data received."
+            "message": "Feedback submitted successfully.",
+            "feedback": {
+                "id": feedback.id,
+                "customer_name": feedback.customer_name,
+                "rating": feedback.rating,
+                "message": feedback.message,
+            }
         })
 
     except Exception as e:
-
         return JsonResponse({
             "success": False,
             "message": str(e)
-        })
+        }, status=500)
 
 
 # =========================================================
@@ -889,171 +690,143 @@ def submit_feedback(request):
 
 def dashboard_data(request):
 
-    if request.method != "GET":
+    try:
+
+        users = User.objects.all()
+        services = Service.objects.all()
+        combos = Combo.objects.all()
+        feedback = Feedback.objects.all()
+        appointments = Appointment.objects.all()
+        payments = Payment.objects.all()
+
+        # -------------------------------------------------
+        # USERS
+        # -------------------------------------------------
+
+        users_data = []
+
+        for user in users:
+            users_data.append({
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "phone": user.phone or "",
+            })
+
+        # -------------------------------------------------
+        # SERVICES
+        # -------------------------------------------------
+
+        services_data = []
+
+        for service in services:
+            services_data.append({
+                "id": service.id,
+                "name": service.name,
+                "description": service.description,
+                "price": str(service.price),
+                "duration": service.duration,
+            })
+
+        # -------------------------------------------------
+        # COMBOS
+        # -------------------------------------------------
+
+        combos_data = []
+
+        for combo in combos:
+            combos_data.append({
+                "id": combo.id,
+                "name": combo.name,
+                "description": combo.description,
+                "price": str(combo.price),
+            })
+
+        # -------------------------------------------------
+        # FEEDBACK
+        # -------------------------------------------------
+
+        feedback_data = []
+
+        for item in feedback:
+            feedback_data.append({
+                "id": item.id,
+                "customer_name": item.customer_name,
+                "rating": item.rating,
+                "message": item.message,
+            })
+
+        # -------------------------------------------------
+        # APPOINTMENTS
+        # -------------------------------------------------
+
+        appointments_data = []
+
+        for appointment in appointments:
+            appointments_data.append({
+                "id": appointment.id,
+                "customer_name": appointment.customer_name,
+                "phone": appointment.phone,
+                "service": appointment.service,
+                "date": appointment.date,
+                "time": appointment.time,
+                "amount": str(appointment.amount),
+                "status": appointment.status,
+                "payment_status": appointment.payment_status,
+            })
+
+        # -------------------------------------------------
+        # PAYMENTS
+        # -------------------------------------------------
+
+        payments_data = []
+
+        for payment in payments:
+            payments_data.append({
+                "id": payment.id,
+                "customer_name": payment.customer_name,
+                "amount": str(payment.amount),
+                "payment_method": payment.payment_method,
+                "payment_status": payment.payment_status,
+            })
+
+        # -------------------------------------------------
+        # REVENUE
+        # -------------------------------------------------
+
+        total_revenue = Decimal("0")
+
+        for appointment in appointments:
+            if appointment.payment_status.lower() == "paid":
+                total_revenue += appointment.amount
+
+        # -------------------------------------------------
+        # FINAL RESPONSE
+        # -------------------------------------------------
+
+        return JsonResponse({
+            "success": True,
+
+            "totalUsers": users.count(),
+            "totalServices": services.count(),
+            "totalCombos": combos.count(),
+            "totalFeedback": feedback.count(),
+            "totalAppointments": appointments.count(),
+            "totalPayments": payments.count(),
+
+            "totalRevenue": str(total_revenue),
+
+            "users": users_data,
+            "services": services_data,
+            "combos": combos_data,
+            "feedback": feedback_data,
+            "appointments": appointments_data,
+            "payments": payments_data,
+        })
+
+    except Exception as e:
 
         return JsonResponse({
             "success": False,
-            "message": "Invalid request."
-        })
-
-    users = User.objects.all()
-    services = Service.objects.all()
-    combos = Combo.objects.all()
-    feedback = Feedback.objects.all()
-    appointments = Appointment.objects.all()
-    payments = Payment.objects.all()
-
-    # -----------------------------------------------------
-    # USERS
-    # -----------------------------------------------------
-
-    users_data = []
-
-    for user in users:
-
-        users_data.append({
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "phone": user.phone
-        })
-
-    # -----------------------------------------------------
-    # SERVICES
-    # -----------------------------------------------------
-
-    services_data = []
-
-    for service in services:
-
-        services_data.append({
-            "id": service.id,
-            "name": service.name,
-            "description": service.description,
-            "price": str(
-                service.price
-            ),
-            "duration": service.duration
-        })
-
-    # -----------------------------------------------------
-    # COMBOS
-    # -----------------------------------------------------
-
-    combos_data = []
-
-    for combo in combos:
-
-        combos_data.append({
-            "id": combo.id,
-            "name": combo.name,
-            "description": combo.description,
-            "price": str(
-                combo.price
-            )
-        })
-
-    # -----------------------------------------------------
-    # FEEDBACK
-    # -----------------------------------------------------
-
-    feedback_data = []
-
-    for item in feedback:
-
-        feedback_data.append({
-            "id": item.id,
-            "customer_name": item.customer_name,
-            "rating": item.rating,
-            "message": item.message
-        })
-
-    # -----------------------------------------------------
-    # APPOINTMENTS
-    # -----------------------------------------------------
-
-    appointments_data = []
-
-    for appointment in appointments:
-
-        appointments_data.append({
-            "id": appointment.id,
-            "customer_name": appointment.customer_name,
-            "phone": appointment.phone,
-            "service": appointment.service,
-            "date": appointment.date,
-            "time": appointment.time,
-            "amount": str(
-                appointment.amount
-            ),
-            "status": appointment.status,
-            "payment_status": appointment.payment_status
-        })
-
-    # -----------------------------------------------------
-    # PAYMENTS
-    # -----------------------------------------------------
-
-    payments_data = []
-
-    for payment in payments:
-
-        payments_data.append({
-            "id": payment.id,
-            "customer_name": payment.customer_name,
-            "amount": str(
-                payment.amount
-            ),
-            "payment_method": payment.payment_method,
-            "payment_status": payment.payment_status
-        })
-
-    # -----------------------------------------------------
-    # TOTAL REVENUE
-    # -----------------------------------------------------
-
-    total_revenue = Decimal("0.00")
-
-    for appointment in appointments:
-
-        if appointment.payment_status == "Paid":
-
-            total_revenue += appointment.amount
-
-    # -----------------------------------------------------
-    # RESPONSE
-    # -----------------------------------------------------
-
-    return JsonResponse({
-
-        "success": True,
-
-        "totalUsers": users.count(),
-
-        "totalServices": services.count(),
-
-        "totalCombos": combos.count(),
-
-        "totalFeedback": feedback.count(),
-
-        "totalAppointments": appointments.count(),
-
-        "totalPayments": payments.count(),
-
-        "totalRevenue": str(
-            total_revenue
-        ),
-
-        "users": users_data,
-
-        "services": services_data,
-
-        "combos": combos_data,
-
-        "feedback": feedback_data,
-
-        "appointments": appointments_data,
-
-        "payments": payments_data
-
-    })
+            "message": str(e)
+        }, status=500)
