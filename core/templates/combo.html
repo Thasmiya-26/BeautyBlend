@@ -207,78 +207,38 @@
 
 <script>
 
-function addCombo(name, price) {
+async function addCombo(name, price) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Get existing cart
-
-    let cart =
-        JSON.parse(
-            localStorage.getItem("cart")
-        ) || [];
-
-
-    // Check whether combo already exists
-
-    let exists =
-        cart.find(
-            item => item.name === name
-        );
-
-
-    if (exists) {
-
-        alert(
-            name +
-            " is already in your cart!"
-        );
-
+    if (cart.find(item => item.name === name)) {
+        alert(name + " is already in your cart!");
         return;
-
     }
 
+    cart.push({ name, price, type: "Combo", quantity: 1 });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("selectedService", name);
+    localStorage.setItem("selectedPrice", price);
 
-    // Add combo to cart
+    try {
+        const response = await fetch("/api/add-combo/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: name,
+                price: price,
+                description: "Beauty Blend combo"
+            })
+        });
+        const data = await response.json();
+        if (!data.success) {
+            console.error(data.message);
+        }
+    } catch (error) {
+        console.error("Combo database save failed:", error);
+    }
 
-    cart.push({
-
-        name: name,
-
-        price: price,
-
-        type: "Combo",
-
-        quantity: 1
-
-    });
-
-
-    // Save cart
-
-    localStorage.setItem(
-        "cart",
-        JSON.stringify(cart)
-    );
-
-
-    // Save selected combo
-
-    localStorage.setItem(
-        "selectedService",
-        name
-    );
-
-
-    localStorage.setItem(
-        "selectedPrice",
-        price
-    );
-
-
-    alert(
-        name +
-        " added successfully!"
-    );
-
+    alert(name + " added successfully!");
 }
 
 </script>
